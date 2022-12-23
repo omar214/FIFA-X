@@ -26,3 +26,8 @@ export const fetchNationalities = async () => {
 	const { data: res } = await API.get('/data/nationalities');
 	return res;
 };
+export const fetchEditProfile = async (user) => {
+	console.log(localStorage.getItem('access-token'));
+	const { data: res } = await API.patch('/users', user);
+	return res;
+};

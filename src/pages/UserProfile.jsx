@@ -15,6 +15,13 @@ import { loginSuccess } from '../redux/userSlice.js';
 import { toast } from 'react-toastify';
 import useProtection from '../hooks/useProtection.jsx';
 import { extractValues, validateSignup } from '../utils/validateSignup.js';
+import { data } from '../data';
+import moment from 'moment';
+import { fetchEditProfile } from '../api/user.js';
+
+const handleErrorMessages = (error) => {
+	return error && <div className="text-danger mb-2">{error}</div>;
+};
 
 const UserProfile = () => {
 	const dispatch = useDispatch();
@@ -23,125 +30,103 @@ const UserProfile = () => {
 	const formRef = useRef(null);
 	const { currentUser } = useSelector((state) => state.user);
 
-	useProtection({ isAdmin: false });
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const formValues = extractValues(formRef.current);
+		formValues.userName = currentUser.username;
+		formValues.email = currentUser.email;
 		const tempErrors = validateSignup(formValues);
+		if (tempErrors.nationality) {
+			delete formValues.nationality;
+			delete tempErrors.nationality;
+		}
+		if (tempErrors.password) {
+			delete tempErrors.password;
+		}
+		if (tempErrors.confirmPassword) delete tempErrors.confirmPassword;
 
 		setErrorMessage(tempErrors);
-		// try {
-		// 	const { data: res } = await API.put(`/users/${currentUser._id}`, {
-		// 		name,
-		// 		email,
-		// 		password: newPassword,
-		// 	});
-		// 	formRef.current.reset();
-		// 	setIsSucess(true);
+		if (Object.keys(tempErrors).length > 0) return;
 
-		// 	dispatch(loginSuccess(res.user));
-		// } catch (error) {
-		// 	toast.dismiss();
-		// 	toast.error('Error While editing user');
-		// }
+		setErrorMessage(tempErrors);
+		try {
+			const res = await fetchEditProfile(formValues);
+			formRef.current.reset();
+			toast.success('User Edited Successfully');
+			dispatch(loginSuccess(res.data));
+		} catch (error) {
+			toast.dismiss();
+			toast.error('Error While editing user');
+		}
 	};
 	return (
-		<Container>
-			{!currentUser ? (
-				<Alert variant="info">
-					You Are not logged in <Link to="/login"> Sign In</Link>
-				</Alert>
-			) : (
-				<>
-					<Row className="justify-content-center mb-5">
-						<Col md={6}>
-							<h2 className="mb-3">User Profile</h2>
-							<Form onSubmit={handleSubmit} ref={formRef}>
+		<Container className="pt-4">
+			<Row className="d-flex justify-content-center">
+				<Col xs={12} md={10} lg={8}>
+					<h3 className="pb-3 text-primary">User Profile</h3>
+					<Form onSubmit={handleSubmit} ref={formRef}>
+						<Row>
+							<Col xs={12} sm={6}>
 								<FloatingLabel label="User Name" className="mb-3">
 									<Form.Control
 										placeholder="User Name"
 										type="text"
 										name="userName"
+										defaultValue={currentUser.username}
 										required
-										defaultValue={currentUser.email}
 										disabled
 									/>
-									{errorMessage.userName && (
-										<div className="text-danger mb-1">
-											{errorMessage.userName}
-										</div>
-									)}
+									{handleErrorMessages(errorMessage.userName)}
 								</FloatingLabel>
+							</Col>
+							<Col xs={12} sm={6}>
 								<FloatingLabel label="Email" className="mb-3">
 									<Form.Control
 										placeholder="Enter Your Email"
 										type="email"
 										name="email"
 										required
-										defaultValue={currentUser.email}
 										disabled
+										defaultValue={currentUser.email}
 									/>
-									{errorMessage.email && (
-										<div className="text-danger mb-1">{errorMessage.email}</div>
-									)}
+									{handleErrorMessages(errorMessage.email)}
 								</FloatingLabel>
+							</Col>
+						</Row>
+
+						<Row>
+							<Col xs={12} sm={6}>
 								<FloatingLabel label="First Name" className="mb-3">
 									<Form.Control
 										placeholder="Enter Your First Name"
 										type="text"
 										name="firstName"
 										required
+										defaultValue={currentUser.firstName}
 									/>
-									{errorMessage.firstName && (
-										<div className="text-danger mb-1">
-											{errorMessage.firstName}
-										</div>
-									)}
+									{handleErrorMessages(errorMessage.firstName)}
 								</FloatingLabel>
+							</Col>
+							<Col xs={12} sm={6}>
 								<FloatingLabel label="Last Name" className="mb-3">
 									<Form.Control
 										placeholder="Enter Your Last Name"
 										type="text"
 										name="lastName"
 										required
+										defaultValue={currentUser.lastName}
 									/>
-									{errorMessage.lastName && (
-										<div className="text-danger mb-1">
-											{errorMessage.lastName}
-										</div>
-									)}
+									{handleErrorMessages(errorMessage.lastName)}
 								</FloatingLabel>
-								<FloatingLabel label="New Password" className="mb-3">
-									<Form.Control
-										placeholder="Enter Your New Password"
-										type="password"
-										name="password"
-										required
-									/>
-									{errorMessage.password && (
-										<div className="text-danger mb-1">
-											{errorMessage.password}
-										</div>
-									)}
-								</FloatingLabel>
-								<FloatingLabel label="Confirm New Password" className="mb-3">
-									<Form.Control
-										placeholder="Confirm New Password"
-										type="password"
-										name="confirmPassword"
-										required
-									/>
-									{errorMessage.confirmPassword && (
-										<div className="text-danger mb-1">
-											{errorMessage.confirmPassword}
-										</div>
-									)}
-								</FloatingLabel>
+							</Col>
+						</Row>
+
+						<Row>
+							<Col xs={12} sm={6}>
 								<FloatingLabel label="Gender" className="mb-3">
 									<Form.Select
 										name="gender"
-										defaultValue={'choose your value'}
+										defaultValue={currentUser.gender}
 										required
 									>
 										<option disabled defaultChecked>
@@ -150,30 +135,57 @@ const UserProfile = () => {
 										<option value="male">Male</option>
 										<option value="female">Female</option>
 									</Form.Select>
+
+									{handleErrorMessages(errorMessage.gender)}
 								</FloatingLabel>
-								{errorMessage.gender && (
-									<div className="text-danger mb-1">{errorMessage.gender}</div>
-								)}
+							</Col>
+							<Col xs={12} sm={6}>
+								<FloatingLabel label="Nationality" className="mb-3">
+									<Form.Select
+										name="nationality"
+										defaultValue={
+											currentUser?.nationality || 'Select your nationality'
+										}
+									>
+										<option defaultChecked value={null}>
+											Select your nationality
+										</option>
+										{data.nationalities.map((national, idx) => (
+											<option key={idx} value={national}>
+												{national}
+											</option>
+										))}
+									</Form.Select>
+
+									{handleErrorMessages(errorMessage.gender)}
+								</FloatingLabel>
+							</Col>
+						</Row>
+
+						<Row>
+							<Col xs={12} sm={6}>
 								<FloatingLabel label="Birth Date" className="mb-3">
 									<Form.Control
 										placeholder="Enter Yout birth date"
 										type="date"
 										name="birthDate"
 										required
+										defaultValue={moment(currentUser.birthDate).format(
+											'YYYY-MM-DD',
+										)}
+										// defaultValue={'2021-01-01'}
 									/>
+									{handleErrorMessages(errorMessage.birthDate)}
 								</FloatingLabel>
-								{errorMessage.birthDate && (
-									<div className="text-danger mb-1">
-										{errorMessage.birthDate}
-									</div>
-								)}
+							</Col>
+						</Row>
 
-								<Button type="submit">Submit</Button>
-							</Form>
-						</Col>
-					</Row>
-				</>
-			)}
+						<Button variant="primary" type="submit">
+							Submit
+						</Button>
+					</Form>
+				</Col>
+			</Row>
 		</Container>
 	);
 };

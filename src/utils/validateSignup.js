@@ -13,10 +13,10 @@ export const extractValues = (form) => {
 	} = Object.fromEntries(formData);
 
 	return {
-		userName: userName.trim(),
-		email: email.trim(),
-		firstName: firstName.trim(),
-		lastName: lastName.trim(),
+		userName: userName?.trim() || '',
+		email: email?.trim() || '',
+		firstName: firstName?.trim(),
+		lastName: lastName?.trim(),
 		password,
 		confirmPassword,
 		birthDate,

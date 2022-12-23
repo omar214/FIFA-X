@@ -7,7 +7,7 @@ const API = axios.create({
 	headers: {
 		// 'Content-Type': 'multipart/form-data',
 		'Content-Type': 'application/json',
-		authorization: `${localStorage.getItem('access-token')}`,
+		Authorization: `Bearer ${localStorage.getItem('access_token')}`,
 	},
 	transformRequest: [
 		function (data, headers) {
@@ -17,7 +17,7 @@ const API = axios.create({
 				headers['Content-Type'] = 'application/json';
 			}
 			if (localStorage.getItem('access-token'))
-				headers['authorization'] = `${localStorage.getItem('access-token')}`;
+				headers['authorization'] = `Bearer ${localStorage.getItem('access-token')}`;
 			// Do not change data
 			if (data instanceof FormData) {
 				return data;
