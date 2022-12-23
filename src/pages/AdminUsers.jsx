@@ -1,4 +1,4 @@
-import { Container, Table, Button, Alert, Badge } from 'react-bootstrap';
+import { Container, Table, Button, Alert, Badge, Form } from 'react-bootstrap';
 
 import { useNavigate, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -7,11 +7,12 @@ import { CircularProgress } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import useProtection from '../hooks/useProtection.jsx';
+import { fetchDeleteUser, fetchUsers } from '../api/admin.js';
+import { isAdmin, isManager } from '../utils/index.js';
 
-const AdminOrders = () => {
+const AdminUsers = () => {
 	const { currentUser } = useSelector((state) => state.user);
 	const navigate = useNavigate();
-	useProtection({ isAdmin: true });
 
 	const [users, setUsers] = useState({
 		items: [],
@@ -23,8 +24,8 @@ const AdminOrders = () => {
 		const fecthData = async () => {
 			setUsers((prev) => ({ ...prev, loading: true }));
 			try {
-				const { data: res } = await API.get('/users');
-				setUsers({ loading: false, error: false, items: res.users });
+				const res = await fetchUsers();
+				setUsers({ loading: false, error: false, items: res.data });
 			} catch (error) {
 				setUsers((prev) => ({ ...prev, loading: false, error: true }));
 				console.log(error.message);
@@ -32,13 +33,26 @@ const AdminOrders = () => {
 				toast.error('Error While Fetchig users');
 			}
 		};
+
 		currentUser && fecthData();
 	}, [currentUser, navigate]);
 
+	const handleSetManger = async (isManager, id) => {
+		try {
+			await API.patch(`/users/${id}`, { isFan: true, isManager });
+			toast.dismiss();
+			toast.success('user updated Successfully');
+		} catch (error) {
+			toast.dismiss();
+			toast.error('Error While setting user as manager');
+			console.log(error.message);
+		}
+	};
+
 	const handleDeletUser = async (id) => {
 		try {
-			await API.delete(`/users/${id}`);
-			const filterd = users.items.filter((e) => e._id !== id);
+			await fetchDeleteUser(id);
+			const filterd = users.items.filter((e) => e.id !== id);
 			setUsers({
 				loading: false,
 				error: false,
@@ -66,39 +80,35 @@ const AdminOrders = () => {
 						<thead className="border-bottom border-2 border-dark">
 							<tr>
 								<th>ID</th>
-								<th>Name </th>
+								<th>userName</th>
+								<th>Full Name</th>
 								<th>Email</th>
+								<th>nationality</th>
 								<th>IS MANAGER</th>
 								<th>ACTIONS</th>
 							</tr>
 						</thead>
 						<tbody>
-							{users.items.map((p, idx) => (
-								<tr className="mb-3" key={idx} varient={'danger'}>
-									<td>{p._id}</td>
-									<td>{p.name}</td>
-									<td>{p.email}</td>
+							{users.items.map((u, idx) => (
+								<tr className="mb-3 " key={idx} varient={'danger'}>
+									<td>{u.id}</td>
+									<td>{u.username}</td>
+									<td>{`${u.firstName}  ${u.lastName}`}</td>
+									<td>{u.email}</td>
+									<td> {u.nationality ? u.nationality : ''}</td>
 									<td>
-										{p.isAdmin ? (
-											<Badge bg="success">Yes</Badge>
-										) : (
-											<Badge bg="danger">No</Badge>
-										)}
+										<Form.Check
+											type="switch"
+											id="custom-switch"
+											defaultChecked={isManager(u)}
+											onChange={(e) => handleSetManger(e.target.checked, u.id)}
+										/>
 									</td>
 									<td>
 										<Button
-											as={Link}
-											to={`/admin/users/${p._id}`}
-											variant="light"
-											size="sm"
-											className="me-2 mb-sm-2 mb-lg-0"
-										>
-											Edit
-										</Button>
-										<Button
 											variant="outline-danger"
 											size="sm"
-											onClick={() => handleDeletUser(p._id)}
+											onClick={() => handleDeletUser(u.id)}
 										>
 											Delete
 										</Button>
@@ -113,4 +123,4 @@ const AdminOrders = () => {
 	);
 };
 
-export default AdminOrders;
+export default AdminUsers;
