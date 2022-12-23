@@ -1,11 +1,14 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import Badge from 'react-bootstrap/Badge';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
+import {
+	Container,
+	Nav,
+	Navbar,
+	Badge,
+	NavDropdown,
+	Form,
+	Button,
+	InputGroup,
+} from 'react-bootstrap';
+
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +16,7 @@ import { logout } from '../redux/userSlice.js';
 import { useEffect } from 'react';
 import API from '../api/api.js';
 import { toast } from 'react-toastify';
+import { isAdmin } from '../utils';
 
 function MyNavbar() {
 	const dispatch = useDispatch();
@@ -36,7 +40,7 @@ function MyNavbar() {
 					<Nav className="ms-auto">
 						{currentUser ? (
 							<NavDropdown
-								title={currentUser.name}
+								title={currentUser.username}
 								id="collasible-nav-dropdown"
 							>
 								<NavDropdown.Item as={Link} to="user">
@@ -55,7 +59,7 @@ function MyNavbar() {
 								Log in
 							</Nav.Link>
 						)}
-						{currentUser && currentUser.isAdmin && (
+						{isAdmin(currentUser) && (
 							<NavDropdown title={'Admin'} id="Admin-nav-dropdown">
 								<NavDropdown.Item as={Link} to="admin/dashboard">
 									DASHBOARD
