@@ -1,34 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Alert from 'react-bootstrap/Alert';
+import { ToastContainer } from 'react-toastify';
+import { Navbar } from './components';
+import {
+	Home,
+	Login,
+	Signup,
+	UserProfile,
+	AdminUsers,
+	AdminUserEdit,
+	Dashboard,
+	AdminStadiums,
+} from './pages';
 
 function App() {
-  const [count, setCount] = useState(0)
+	return (
+		<>
+			<ToastContainer
+				position="bottom-center"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+			/>
+			<div className="d-flex flex-column body ">
+				<main>
+					<BrowserRouter>
+						<Navbar />
+						<Routes>
+							<Route index element={<Home />} />
+							<Route path="login" element={<Login />} />
+							<Route path="signup" element={<Signup />} />
+							<Route path="user" element={<UserProfile />} />
 
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+							{/* Admin Pages */}
+							<Route path="admin/dashboard" element={<Dashboard />} />
+							<Route path="admin/users" element={<AdminUsers />} />
+							<Route path="admin/users/:id" element={<AdminUserEdit />} />
+							<Route path="admin/stadiums" element={<AdminStadiums />} />
+
+							<Route
+								path="*"
+								element={
+									<Alert className="container" variant="danger">
+										Error 404 Page is not found
+									</Alert>
+								}
+							/>
+						</Routes>
+					</BrowserRouter>
+				</main>
+			</div>
+		</>
+	);
 }
 
-export default App
+export default App;

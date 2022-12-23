@@ -45,7 +45,7 @@ const PaypalCheckoutButton = ({ totalPrice, orderId, setOrderDetails }) => {
 
 	useEffect(() => {
 		const loadPaypalScript = async () => {
-			const clientId = process.env.REACT_APP_PAYPAL_CLIENT_ID;
+			const clientId = import.meta.env.REACT_APP_PAYPAL_CLIENT_ID;
 			paypalDispatch({
 				type: 'resetOptions',
 				value: {

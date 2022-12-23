@@ -18,6 +18,8 @@ function Login() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		console.log(import.meta.env.REACT_APP_API_URL);
+
 		setErrorMessage('');
 		const email = formRef.current.email.value.trim(),
 			password = formRef.current.password.value.trim();
