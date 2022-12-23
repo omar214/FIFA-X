@@ -42,6 +42,7 @@ function MyNavbar() {
 							<NavDropdown
 								title={currentUser.username}
 								id="collasible-nav-dropdown"
+								align="end"
 							>
 								<NavDropdown.Item as={Link} to="user">
 									User Profile
@@ -60,7 +61,7 @@ function MyNavbar() {
 							</Nav.Link>
 						)}
 						{isAdmin(currentUser) && (
-							<NavDropdown title={'Admin'} id="Admin-nav-dropdown">
+							<NavDropdown title={'Admin'} id="Admin-nav-dropdown" align="end">
 								<NavDropdown.Item as={Link} to="admin/dashboard">
 									DASHBOARD
 								</NavDropdown.Item>

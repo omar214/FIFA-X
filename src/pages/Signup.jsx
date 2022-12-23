@@ -60,7 +60,7 @@ function Signup() {
 		<Container className="pt-4">
 			<Row className="d-flex justify-content-center">
 				<Col xs={12} md={8}>
-					<h3 className="pb-3">Sign up</h3>
+					<h3 className="pb-3 text-primary">Sign up</h3>
 					<Form onSubmit={handleSubmit} ref={formRef}>
 						<Row>
 							<Col>

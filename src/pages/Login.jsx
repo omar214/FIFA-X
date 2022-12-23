@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import API from '../api/api.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginStart, loginSuccess, loginFailure } from '../redux/userSlice.js';
+import { fetchLogin } from '../api/user.js';
 
 function Login() {
 	const formRef = useRef(null);
@@ -18,11 +19,10 @@ function Login() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(import.meta.env.REACT_APP_API_URL);
 
 		setErrorMessage('');
 		const email = formRef.current.email.value.trim(),
-			password = formRef.current.password.value.trim();
+			password = formRef.current.password.value;
 		if (!email || !password) {
 			setErrorMessage('Please fill all fields');
 			return;
@@ -30,14 +30,12 @@ function Login() {
 
 		dispatch(loginStart());
 		try {
-			const { data: res } = await API.post('/auth/login', {
-				email,
-				password,
-			});
+			const res = await fetchLogin({ email, password });
 			formRef.current.reset();
-			localStorage.setItem('access-token', res.token);
+			localStorage.setItem('access-token', res.data.token);
+			delete res.data.token;
 
-			dispatch(loginSuccess(res.user));
+			dispatch(loginSuccess(res.data));
 			navigate('/');
 		} catch (error) {
 			dispatch(loginFailure('Invalid email or password'));
@@ -50,10 +48,10 @@ function Login() {
 	};
 
 	return (
-		<Container>
+		<Container className="mt-3">
 			<Row className="d-flex justify-content-center">
-				<Col sm={6}>
-					<h3>Log in</h3>
+				<Col xs={12} md={8} lg={6}>
+					<h3 className="text-primary">Log in</h3>
 					<Form onSubmit={handleSubmit} ref={formRef}>
 						<Form.Group className="mb-3" controlId="formBasicEmail">
 							<Form.Label>Email address</Form.Label>
@@ -78,7 +76,7 @@ function Login() {
 							Submit
 						</Button>
 
-						<p>
+						<p className="mt-3">
 							Don't have Email ?
 							<Link to="/signup" variant="info" className="ms-2">
 								Create your account
