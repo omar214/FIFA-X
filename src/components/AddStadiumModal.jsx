@@ -5,8 +5,10 @@ import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import API from '../api/api.js';
 import { toast } from 'react-toastify';
+import { Col, Row } from 'react-bootstrap';
+import { fetchAddStadium } from '../api/admin.js';
 
-function AddStadiumModal({ handleClose, show, addProduct }) {
+function AddStadiumModal({ handleClose, show, appendStadium }) {
 	const formRef = useRef(null);
 	const [errorMessage, setErrorMessage] = useState('');
 
@@ -15,46 +17,31 @@ function AddStadiumModal({ handleClose, show, addProduct }) {
 
 		let name = formRef.current.name.value.trim(),
 			description = formRef.current.description.value.trim(),
-			price = formRef.current.price.value.trim(),
-			countInStock = formRef.current.countInStock.value.trim(),
-			category = formRef.current.category.value.trim(),
-			image = formRef.current.image.files[0],
-			brand = formRef.current.brand.value.trim();
+			width = formRef.current.width.value.trim(),
+			height = formRef.current.height.value.trim(),
+			image = formRef.current.image.files[0];
 
 		setErrorMessage('');
 		console.log(image);
-		if (
-			!name ||
-			!description ||
-			!price ||
-			!countInStock ||
-			!category ||
-			!brand ||
-			!image
-		)
+		if (!name || !description || !width || !height || !image)
 			return setErrorMessage('Please Enter All Fields');
 
 		try {
-			let data = new FormData();
-			data.append('image', image); //<-- CHANGED .value to .files[0]
-			data.append('name', name);
-			data.append('description', description);
-			data.append('price', price);
-			data.append('countInStock', countInStock);
-			data.append('category', category);
-			data.append('brand', brand);
-
-			console.log('asd');
-			const { data: res } = await API.post('/products', data, {
-				'Content-Type': 'multipart/form-data',
+			const res = await fetchAddStadium({
+				name,
+				description,
+				width,
+				height,
+				image,
 			});
-			console.log(res);
-			addProduct(res.product);
+
+			appendStadium(res.data);
+
 			formRef.current.reset();
 			handleClose();
 		} catch (error) {
 			setErrorMessage('Error while Adding Stadium');
-			console.log('erro fetching cart');
+			console.log(error);
 		}
 	};
 
@@ -62,32 +49,22 @@ function AddStadiumModal({ handleClose, show, addProduct }) {
 		<>
 			<Modal show={show} onHide={handleClose}>
 				<Modal.Header closeButton>
-					<Modal.Title>Add Stadium</Modal.Title>
+					<Modal.Title className="text-primary">Add New Stadium</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Form onSubmit={handleAddStadium} ref={formRef}>
 						<Form.Group className="mb-3">
-							<Form.Label> Name</Form.Label>
+							<Form.Label className="fw-bold "> Name</Form.Label>
 							<Form.Control
 								required
-								placeholder="enter your name"
+								placeholder="enter Stadium name"
 								type="text"
 								name="name"
 							/>
 						</Form.Group>
 
 						<Form.Group className="mb-3">
-							<Form.Label> Image</Form.Label>
-							<Form.Control
-								required
-								placeholder="enter Image"
-								type="file"
-								name="image"
-							/>
-						</Form.Group>
-
-						<Form.Group className="mb-3">
-							<Form.Label> Description</Form.Label>
+							<Form.Label className="fw-bold "> Description</Form.Label>
 							<Form.Control
 								required
 								placeholder="enter Description"
@@ -96,43 +73,39 @@ function AddStadiumModal({ handleClose, show, addProduct }) {
 							/>
 						</Form.Group>
 
-						<Form.Group className="mb-3">
-							<Form.Label> Price</Form.Label>
-							<Form.Control
-								required
-								placeholder="enter Price"
-								type="number"
-								name="price"
-							/>
-						</Form.Group>
+						<Row>
+							<Col>
+								<Form.Group className="mb-3">
+									<Form.Label className="fw-bold "> width</Form.Label>
+									<Form.Control
+										required
+										placeholder="Vip lounge width"
+										type="number"
+										name="width"
+									/>
+								</Form.Group>
+							</Col>
+							<Col>
+								<Form.Group className="mb-3">
+									<Form.Label className="fw-bold "> height</Form.Label>
+									<Form.Control
+										required
+										placeholder="Vip lounge height"
+										type="number"
+										name="height"
+									/>
+								</Form.Group>
+							</Col>
+						</Row>
 
 						<Form.Group className="mb-3">
-							<Form.Label> count in stock</Form.Label>
+							<Form.Label className="fw-bold "> Image</Form.Label>
 							<Form.Control
 								required
-								placeholder="enter count in stock"
-								type="number"
-								name="countInStock"
-							/>
-						</Form.Group>
-
-						<Form.Group className="mb-3">
-							<Form.Label> category</Form.Label>
-							<Form.Control
-								required
-								placeholder="enter category"
-								type="text"
-								name="category"
-							/>
-						</Form.Group>
-
-						<Form.Group className="mb-3">
-							<Form.Label> Brand</Form.Label>
-							<Form.Control
-								required
-								placeholder="enter Brand"
-								type="text"
-								name="brand"
+								placeholder="enter Image"
+								type="file"
+								accept="image/*"
+								name="image"
 							/>
 						</Form.Group>
 

@@ -11,6 +11,7 @@ import {
 	AdminUserEdit,
 	Dashboard,
 	AdminStadiums,
+	StadiumsScreen,
 } from './pages';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
 							<Route path="login" element={<Login />} />
 							<Route path="signup" element={<Signup />} />
 							<Route path="user" element={<UserProfile />} />
+							<Route path="stadiums" element={<StadiumsScreen />} />
 
 							{/* Admin Pages */}
 							<Route path="admin/dashboard" element={<Dashboard />} />

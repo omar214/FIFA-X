@@ -38,6 +38,9 @@ function MyNavbar() {
 
 				<Navbar.Collapse id="responsive-navbar-nav">
 					<Nav className="ms-auto">
+						<Nav.Link as={Link} to="stadiums">
+							stadiums
+						</Nav.Link>
 						{currentUser ? (
 							<NavDropdown
 								title={currentUser.username}
