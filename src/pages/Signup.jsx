@@ -1,16 +1,17 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Alert from 'react-bootstrap/Alert';
-import Col from 'react-bootstrap/Col';
+import { Col, Row, Alert, Container, Form, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import API from '../api/api.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginStart, loginSuccess, loginFailure } from '../redux/userSlice.js';
 import { FloatingLabel } from 'react-bootstrap';
 import { extractValues, validateSignup } from '../utils/validateSignup.js';
+import { fetchNationalities, fetchSignup } from '../api/user.js';
+import { toast } from 'react-toastify';
+import { data } from '../data';
+
+const handleErrorMessages = (error) => {
+	return error && <div className="text-danger mb-2">{error}</div>;
+};
 
 function Signup() {
 	const formRef = useRef(null);
@@ -23,114 +24,119 @@ function Signup() {
 		currentUser && navigate('/');
 	}, [currentUser, navigate]);
 
-	const handleErrorMessages = (error) => {
-		return error && <div className="text-danger mb-2">asdas</div>;
-	};
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const formValues = extractValues(formRef.current);
 		const tempErrors = validateSignup(formValues);
+		console.log('formValues \t', formValues);
+		if (tempErrors.nationality) {
+			delete formValues.nationality;
+			delete tempErrors.nationality;
+		}
 		console.log('erros \t', tempErrors);
+		console.log('formValues \t', formValues);
 		setErrorMessage(tempErrors);
+		if (Object.keys(tempErrors).length > 0) return;
 
-		// dispatch(loginStart());
-		// try {
-		// 	const { data: res } = await API.post('/auth/signup', {
-		// 		userName: formValues.userName,
-		// 		email: formValues.email,
-		// 		firstName: formValues.firstName,
-		// 		lastName: formValues.lastName,
-		// 		password: formValues.password,
-		// 		gender: formValues.gender,
-		// 		birthDate: formValues.birthDate,
-		// 	});
-		// 	formRef.current.reset();
-		// 	localStorage.setItem('access-token', res.token);
+		dispatch(loginStart());
+		try {
+			const res = await fetchSignup(formValues);
 
-		// 	dispatch(loginSuccess(res.user));
-		// 	navigate('/');
-		// } catch (error) {
-		// 	dispatch(loginFailure('Invalid email or password'));
-		// 	if (error.response.status === 409) {
-		// 		setErrorMessage(['Email already exists']);
-		// 	}
-		// }
+			formRef.current.reset();
+			localStorage.setItem('access-token', res.data.token);
+			delete res.data.token;
+			dispatch(loginSuccess(res.data));
+			navigate('/');
+		} catch (error) {
+			dispatch(loginFailure('Invalid email or password'));
+			toast.dismiss();
+			toast.error(error.response.data.data.message);
+			if (error.response.status === 409) {
+				setErrorMessage(['Email already exists']);
+			}
+		}
 	};
 	return (
-		<Container>
+		<Container className="pt-4">
 			<Row className="d-flex justify-content-center">
-				<Col sm={6}>
-					<h3>Sign up</h3>
+				<Col xs={12} md={8}>
+					<h3 className="pb-3">Sign up</h3>
 					<Form onSubmit={handleSubmit} ref={formRef}>
-						<FloatingLabel label="User Name" className="mb-3">
-							<Form.Control
-								placeholder="User Name"
-								type="text"
-								name="userName"
-								required
-							/>
-							{errorMessage.userName && (
-								<div className="text-danger mb-1">{errorMessage.userName}</div>
-							)}
-						</FloatingLabel>
-						<FloatingLabel label="Email" className="mb-3">
-							<Form.Control
-								placeholder="Enter Your Email"
-								type="email"
-								name="email"
-								required
-							/>
-							{errorMessage.email && (
-								<div className="text-danger mb-1">{errorMessage.email}</div>
-							)}
-						</FloatingLabel>
-						<FloatingLabel label="First Name" className="mb-3">
-							<Form.Control
-								placeholder="Enter Your First Name"
-								type="text"
-								name="firstName"
-								required
-							/>
-							{errorMessage.firstName && (
-								<div className="text-danger mb-1">{errorMessage.firstName}</div>
-							)}
-						</FloatingLabel>
-						<FloatingLabel label="Last Name" className="mb-3">
-							<Form.Control
-								placeholder="Enter Your Last Name"
-								type="text"
-								name="lastName"
-								required
-							/>
-							{errorMessage.lastName && (
-								<div className="text-danger mb-1">{errorMessage.lastName}</div>
-							)}
-						</FloatingLabel>
-						<FloatingLabel label="Password" className="mb-3">
-							<Form.Control
-								placeholder="Enter Your Last Password"
-								type="password"
-								name="password"
-								required
-							/>
-							{errorMessage.password && (
-								<div className="text-danger mb-1">{errorMessage.password}</div>
-							)}
-						</FloatingLabel>
-						<FloatingLabel label="Confirm Password" className="mb-3">
-							<Form.Control
-								placeholder="Enter Your Confirm Password"
-								type="password"
-								name="confirmPassword"
-								required
-							/>
-							{errorMessage.confirmPassword && (
-								<div className="text-danger mb-1">
-									{errorMessage.confirmPassword}
-								</div>
-							)}
-						</FloatingLabel>
+						<Row>
+							<Col>
+								<FloatingLabel label="User Name" className="mb-3">
+									<Form.Control
+										placeholder="User Name"
+										type="text"
+										name="userName"
+										required
+									/>
+									{handleErrorMessages(errorMessage.userName)}
+								</FloatingLabel>
+							</Col>
+							<Col>
+								<FloatingLabel label="Email" className="mb-3">
+									<Form.Control
+										placeholder="Enter Your Email"
+										type="email"
+										name="email"
+										required
+									/>
+									{handleErrorMessages(errorMessage.email)}
+								</FloatingLabel>
+							</Col>
+						</Row>
+
+						<Row>
+							<Col>
+								<FloatingLabel label="First Name" className="mb-3">
+									<Form.Control
+										placeholder="Enter Your First Name"
+										type="text"
+										name="firstName"
+										required
+									/>
+									{handleErrorMessages(errorMessage.firstName)}
+								</FloatingLabel>
+							</Col>
+							<Col>
+								<FloatingLabel label="Last Name" className="mb-3">
+									<Form.Control
+										placeholder="Enter Your Last Name"
+										type="text"
+										name="lastName"
+										required
+									/>
+									{handleErrorMessages(errorMessage.lastName)}
+								</FloatingLabel>
+							</Col>
+						</Row>
+
+						<Row>
+							<Col>
+								<FloatingLabel label="Password" className="mb-3">
+									<Form.Control
+										placeholder="Enter Your Last Password"
+										type="password"
+										name="password"
+										required
+									/>
+									{handleErrorMessages(errorMessage.password)}
+								</FloatingLabel>
+							</Col>
+							<Col>
+								<FloatingLabel label="Confirm Password" className="mb-3">
+									<Form.Control
+										placeholder="Enter Your Confirm Password"
+										type="password"
+										name="confirmPassword"
+										required
+									/>
+									{handleErrorMessages(errorMessage.confirmPassword)}
+								</FloatingLabel>
+							</Col>
+						</Row>
+
 						<FloatingLabel label="Gender" className="mb-3">
 							<Form.Select
 								name="gender"
@@ -143,10 +149,10 @@ function Signup() {
 								<option value="male">Male</option>
 								<option value="female">Female</option>
 							</Form.Select>
+
+							{handleErrorMessages(errorMessage.gender)}
 						</FloatingLabel>
-						{errorMessage.gender && (
-							<div className="text-danger mb-1">{errorMessage.gender}</div>
-						)}
+
 						<FloatingLabel label="Birth Date" className="mb-3">
 							<Form.Control
 								placeholder="Enter Yout birth date"
@@ -154,16 +160,31 @@ function Signup() {
 								name="birthDate"
 								required
 							/>
+							{handleErrorMessages(errorMessage.birthDate)}
 						</FloatingLabel>
-						{errorMessage.birthDate && (
-							<div className="text-danger mb-1">{errorMessage.birthDate}</div>
-						)}
+						<FloatingLabel label="Nationality" className="mb-3">
+							<Form.Select
+								name="nationality"
+								defaultValue={'Select your nationality'}
+							>
+								<option defaultChecked value={null}>
+									Select your nationality
+								</option>
+								{data.nationalities.map((national, idx) => (
+									<option key={idx} value={national}>
+										{national}
+									</option>
+								))}
+							</Form.Select>
+
+							{handleErrorMessages(errorMessage.gender)}
+						</FloatingLabel>
 
 						<Button variant="primary" type="submit">
 							Submit
 						</Button>
 
-						<p>
+						<p className="mt-3">
 							Already have an account?
 							<Link to="/login" variant="info" className="ms-2">
 								Log-In{' '}

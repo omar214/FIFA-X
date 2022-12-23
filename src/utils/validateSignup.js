@@ -9,6 +9,7 @@ export const extractValues = (form) => {
 		confirmPassword,
 		birthDate,
 		gender,
+		nationality,
 	} = Object.fromEntries(formData);
 
 	return {
@@ -20,12 +21,12 @@ export const extractValues = (form) => {
 		confirmPassword,
 		birthDate,
 		gender,
+		nationality,
 	};
 };
 
 export const validateSignup = (values) => {
 	const errors = {};
-	console.log(values.birthDate);
 
 	if (!values.userName) {
 		errors.userName = 'Username is required';
@@ -59,8 +60,8 @@ export const validateSignup = (values) => {
 
 	if (!values.password) {
 		errors.password = 'Password is required';
-	} else if (values.password.length < 6) {
-		errors.password = 'Password needs to be 6 characters or more';
+	} else if (values.password.length < 8) {
+		errors.password = 'Password needs to be 8 characters or more';
 	}
 
 	if (!values.confirmPassword) {
@@ -75,7 +76,7 @@ export const validateSignup = (values) => {
 		errors.gender = 'invalide gender value';
 	}
 
-  values.birthDate = new Date(values.birthDate);
+	values.birthDate = new Date(values.birthDate);
 	if (!values.birthDate) {
 		errors.birthDate = 'Birth date is required';
 	}
@@ -93,12 +94,15 @@ export const validateSignup = (values) => {
 		values.birthDate > new Date('1900-01-01') &&
 		values.birthDate < new Date()
 	) {
-    const age = new Date().getFullYear() - new Date(values.birthDate).getFullYear();
-    console.log(age);
+		const age =
+			new Date().getFullYear() - new Date(values.birthDate).getFullYear();
 		if (age < 18) {
 			errors.birthDate = 'You must be 18 years old or older';
 		}
 	}
 
+	if (values.nationality && values.nationality === 'Select your nationality') {
+		errors.nationality = true;
+	}
 	return errors;
 };
