@@ -8,7 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from 'react-toastify';
 import StadiumCard from '../components/StadiumCard.jsx';
 import { Button } from 'react-bootstrap';
-import AddStadiumModal from '../components/AddStadiumModal.jsx';
+import { AddStadiumModal } from '../components';
 import { useSelector } from 'react-redux';
 import { isManager } from '../utils';
 
