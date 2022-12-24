@@ -7,3 +7,4 @@ export { default as AdminUsers } from './AdminUsers.jsx';
 export { default as AdminUserEdit } from './AdminUserEdit.jsx';
 export { default as AdminStadiums } from './AdminStadiums.jsx';
 export { default as StadiumsScreen } from './StadiumsScreen.jsx';
+export { default as MatchesScreen } from './MatchesScreen.jsx';

@@ -41,6 +41,9 @@ function MyNavbar() {
 						<Nav.Link as={Link} to="stadiums">
 							stadiums
 						</Nav.Link>
+						<Nav.Link as={Link} to="matches">
+							matches
+						</Nav.Link>
 						{currentUser ? (
 							<NavDropdown
 								title={currentUser.username}

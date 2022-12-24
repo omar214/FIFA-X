@@ -12,6 +12,7 @@ import {
 	Dashboard,
 	AdminStadiums,
 	StadiumsScreen,
+	MatchesScreen,
 } from './pages';
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
 							<Route path="signup" element={<Signup />} />
 							<Route path="user" element={<UserProfile />} />
 							<Route path="stadiums" element={<StadiumsScreen />} />
+							<Route path="matches" element={<MatchesScreen />} />
 
 							{/* Admin Pages */}
 							<Route path="admin/dashboard" element={<Dashboard />} />

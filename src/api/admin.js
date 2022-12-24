@@ -22,3 +22,7 @@ export const fetchAddStadium = async (stadium) => {
 	});
 	return res;
 };
+export const fetchAddMatch = async (match) => {
+	const { data: res } = await API.post('/matches', match);
+	return res;
+};
