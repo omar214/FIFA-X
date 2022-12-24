@@ -60,7 +60,7 @@ const MatchCard = ({ match }) => {
 					<h5 className="mt-3 ms-1 text-primary">
 						{moment(match.date).isBefore(Date.now())
 							? `Ended : ${moment(match.date).fromNow()}`
-							: `Played in : ${moment(match.date).format('DD/MM/YYYY')}`}
+							: `Played in : ${moment(match.date).format('DD/MM/YYYY -  h:mm a')}`}
 					</h5>
 				</Col>
 			</Row>
