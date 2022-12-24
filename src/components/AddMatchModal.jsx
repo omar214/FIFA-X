@@ -7,6 +7,7 @@ import API from '../api/api.js';
 import { toast } from 'react-toastify';
 import { Col, Row } from 'react-bootstrap';
 import { fetchAddMatch, fetchAddStadium } from '../api/admin.js';
+import { data } from '../data/index.js';
 
 function addMatchModal({ handleClose, show, appendMatch }) {
 	const formRef = useRef(null);
@@ -36,9 +37,9 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 		let team1 = formRef.current.team1.value,
 			team2 = formRef.current.team2.value,
 			stadium = formRef.current.stadium.value,
-			mainReferee = formRef.current.mainReferee.value.trim(),
-			linesMan1 = formRef.current.linesMan1.value.trim(),
-			linesMan2 = formRef.current.linesMan2.value.trim(),
+			mainReferee = formRef.current.mainReferee.value,
+			linesMan1 = formRef.current.linesMan1.value,
+			linesMan2 = formRef.current.linesMan2.value,
 			date = formRef.current.date.value;
 
 		const temp = validateForm({
@@ -66,9 +67,16 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 			appendMatch(res.data);
 			formRef.current.reset();
 			handleClose();
+			toast.success('Match Added Successfully');
 		} catch (error) {
-			setErrorMessage('Error while Adding Stadium');
-			console.log(error);
+			let msg = error.response.data.data.message;
+			if (msg.includes(' already has a match that day'))
+				msg = 'this team already has a match that day';
+
+			msg = msg || 'Error in adding match';
+			setErrorMessage(msg);
+			console.log(msg);
+			toast.error(msg);
 		}
 	};
 
@@ -116,15 +124,16 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 							</Form.Select>
 						</Form.Group>
 
-						{/* Main Reg */}
+						{/* Main Ref */}
 						<Form.Group className="mb-3">
 							<Form.Label className="fw-bold "> Main Refree</Form.Label>
-							<Form.Control
-								required
-								placeholder="Main Refree"
-								type="text"
-								name="mainReferee"
-							/>
+							<Form.Select name="mainReferee" required>
+								{data.refrees.map((referee, idx) => (
+									<option key={idx} value={referee}>
+										{referee}
+									</option>
+								))}
+							</Form.Select>
 						</Form.Group>
 
 						{/* Lines Men */}
@@ -132,23 +141,25 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 							<Col xs={12} md={6}>
 								<Form.Group className="mb-3">
 									<Form.Label className="fw-bold "> LinesMan 1</Form.Label>
-									<Form.Control
-										required
-										placeholder="first LinesMan"
-										type="text"
-										name="linesMan1"
-									/>
+									<Form.Select name="linesMan1" required>
+										{data.linesMen.map((referee, idx) => (
+											<option key={idx} value={referee}>
+												{referee}
+											</option>
+										))}
+									</Form.Select>
 								</Form.Group>
 							</Col>
 							<Col xs={12} md={6}>
 								<Form.Group className="mb-3">
 									<Form.Label className="fw-bold "> LinesMan 2</Form.Label>
-									<Form.Control
-										required
-										placeholder="second LinesMan"
-										type="text"
-										name="linesMan2"
-									/>
+									<Form.Select name="linesMan2" required>
+										{data.linesMen.map((referee, idx) => (
+											<option key={idx} value={referee}>
+												{referee}
+											</option>
+										))}
+									</Form.Select>
 								</Form.Group>
 							</Col>
 						</Row>
@@ -158,8 +169,9 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 							<Form.Label className="fw-bold "> Date</Form.Label>
 							<Form.Control
 								required
+								aria-label="Date of Match"
 								placeholder="Date of Match"
-								type="date"
+								type="datetime-local"
 								name="date"
 							/>
 						</Form.Group>
@@ -171,7 +183,7 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 						Close
 					</Button>
 					<Button variant="success" onClick={handleAddMatch}>
-						Add Stadium
+						Add Match
 					</Button>
 				</Modal.Footer>
 			</Modal>
@@ -204,6 +216,10 @@ function validateForm(data) {
 
 	if (team1 === team2) {
 		return 'Team 1 and Team 2 must be different';
+	}
+
+	if (linesMan1 === linesMan2) {
+		return 'LinesMan 1 and LinesMan 2 must be different';
 	}
 
 	if (new Date(date) < new Date()) {
