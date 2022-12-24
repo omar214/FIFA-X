@@ -1,8 +1,9 @@
 import moment from 'moment';
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-const MatchCard = ({ match }) => {
+const MatchCard = ({ match, showDetails = true }) => {
 	return (
 		<div className="w-md-50 p-3 shadow-lg rounded-4 mb-3">
 			{/* 2 Teams  */}
@@ -60,10 +61,26 @@ const MatchCard = ({ match }) => {
 					<h5 className="mt-3 ms-1 text-primary">
 						{moment(match.date).isBefore(Date.now())
 							? `Ended : ${moment(match.date).fromNow()}`
-							: `Played in : ${moment(match.date).format('DD/MM/YYYY -  h:mm a')}`}
+							: `Played in : ${moment(match.date).format(
+									'DD/MM/YYYY -  h:mm a',
+							  )}`}
 					</h5>
 				</Col>
 			</Row>
+			{showDetails && (
+				<Row>
+					<Col className="d-flex  justify-content-end align-items-center">
+						<Button
+							as={Link}
+							to={`/matches/${match.id}`}
+							variant="secondary"
+							className="px-3 rounded-3"
+						>
+							Details
+						</Button>
+					</Col>
+				</Row>
+			)}
 		</div>
 	);
 };

@@ -6,10 +6,22 @@ import Modal from 'react-bootstrap/Modal';
 import API from '../api/api.js';
 import { toast } from 'react-toastify';
 import { Col, Row } from 'react-bootstrap';
-import { fetchAddMatch, fetchAddStadium } from '../api/admin.js';
+import {
+	fetchAddMatch,
+	fetchAddStadium,
+	fetchEditMatch,
+} from '../api/admin.js';
 import { data } from '../data/index.js';
+import moment from 'moment';
 
-function addMatchModal({ handleClose, show, appendMatch }) {
+function addMatchModal({
+	handleClose,
+	show,
+	appendMatch,
+	isEdit = false,
+	editMatch,
+	match,
+}) {
 	const formRef = useRef(null);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [teams, setTeams] = useState([]);
@@ -54,28 +66,43 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 
 		if (temp) return setErrorMessage(temp);
 
+		const stadiumObj = stadiums.find((s) => s.id === stadium);
+		if (isEdit && stadiumObj && !isBiggerStadium(stadiumObj, match.stadium)) {
+			return setErrorMessage('Stadium is smaller than the previous one');
+		}
+
+		const objToSend = {
+			team1,
+			team2,
+			stadium,
+			mainReferee,
+			linesMan1,
+			linesMan2,
+			date,
+		};
 		try {
-			const res = await fetchAddMatch({
-				team1,
-				team2,
-				stadium,
-				mainReferee,
-				linesMan1,
-				linesMan2,
-				date,
-			});
-			appendMatch(res.data);
+			let res, sucessMsg;
+			if (isEdit) {
+				res = await fetchEditMatch(match.id, objToSend);
+				editMatch(res.data);
+				sucessMsg = 'Match Edited Successfully';
+			} else {
+				res = await fetchAddMatch(objToSend);
+				appendMatch(res.data);
+				sucessMsg = 'Match Added Successfully';
+			}
 			formRef.current.reset();
 			handleClose();
-			toast.success('Match Added Successfully');
+			toast.success(sucessMsg);
 		} catch (error) {
-			let msg = error.response.data.data.message;
+			console.log(error);
+
+			let msg = error?.response?.data?.data?.message || '';
 			if (msg.includes(' already has a match that day'))
 				msg = 'this team already has a match that day';
 
-			msg = msg || 'Error in adding match';
+			msg = msg || `Error in ${isEdit ? 'Editing' : 'Adding'} match`;
 			setErrorMessage(msg);
-			console.log(msg);
 			toast.error(msg);
 		}
 	};
@@ -84,16 +111,22 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 		<>
 			<Modal show={show} onHide={handleClose}>
 				<Modal.Header closeButton>
-					<Modal.Title className="text-primary">Add New Match</Modal.Title>
+					<Modal.Title className="text-primary">
+						{isEdit ? 'Edit Match' : 'Add New Match'}
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Form onSubmit={handleAddMatch} ref={formRef}>
 						{/* team 1 */}
 						<Form.Group className="mb-3">
 							<Form.Label className="fw-bold "> Team 1</Form.Label>
-							<Form.Select name="team1">
+							<Form.Select name="team1" disabled={isEdit}>
 								{teams.map((team) => (
-									<option key={team.id} value={team.id}>
+									<option
+										key={team.id}
+										value={team.id}
+										selected={isEdit && match.team1.id === team.id}
+									>
 										{team.name}
 									</option>
 								))}
@@ -103,9 +136,13 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 						{/* Team 2 */}
 						<Form.Group className="mb-3">
 							<Form.Label className="fw-bold "> Team 2</Form.Label>
-							<Form.Select name="team2">
+							<Form.Select name="team2" disabled={isEdit}>
 								{teams.map((team) => (
-									<option key={team.id} value={team.id}>
+									<option
+										key={team.id}
+										value={team.id}
+										selected={isEdit && match.team2.id === team.id}
+									>
 										{team.name}
 									</option>
 								))}
@@ -115,10 +152,15 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 						{/* Stadium */}
 						<Form.Group className="mb-3">
 							<Form.Label className="fw-bold "> Stadium</Form.Label>
-							<Form.Select name="stadium" defaultValue="Team 2">
+							<Form.Select name="stadium">
 								{stadiums.map((stadium) => (
-									<option key={stadium.id} value={stadium.id}>
-										{stadium.name}
+									<option
+										key={stadium.id}
+										value={stadium.id}
+										selected={isEdit && match.stadium.id === stadium.id}
+									>
+										{stadium.name} ( {stadium.VIPlounge.width} *{' '}
+										{stadium.VIPlounge.height} )
 									</option>
 								))}
 							</Form.Select>
@@ -127,7 +169,11 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 						{/* Main Ref */}
 						<Form.Group className="mb-3">
 							<Form.Label className="fw-bold "> Main Refree</Form.Label>
-							<Form.Select name="mainReferee" required>
+							<Form.Select
+								name="mainReferee"
+								defaultValue={isEdit && match.mainReferee}
+								required
+							>
 								{data.refrees.map((referee, idx) => (
 									<option key={idx} value={referee}>
 										{referee}
@@ -141,7 +187,11 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 							<Col xs={12} md={6}>
 								<Form.Group className="mb-3">
 									<Form.Label className="fw-bold "> LinesMan 1</Form.Label>
-									<Form.Select name="linesMan1" required>
+									<Form.Select
+										name="linesMan1"
+										defaultValue={isEdit && match.linesMan1}
+										required
+									>
 										{data.linesMen.map((referee, idx) => (
 											<option key={idx} value={referee}>
 												{referee}
@@ -153,7 +203,11 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 							<Col xs={12} md={6}>
 								<Form.Group className="mb-3">
 									<Form.Label className="fw-bold "> LinesMan 2</Form.Label>
-									<Form.Select name="linesMan2" required>
+									<Form.Select
+										name="linesMan2"
+										defaultValue={isEdit && match.linesMan2}
+										required
+									>
 										{data.linesMen.map((referee, idx) => (
 											<option key={idx} value={referee}>
 												{referee}
@@ -173,6 +227,9 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 								placeholder="Date of Match"
 								type="datetime-local"
 								name="date"
+								defaultValue={
+									isEdit && moment(match.date).format('YYYY-MM-DDTHH:mm')
+								}
 							/>
 						</Form.Group>
 						{errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
@@ -183,7 +240,7 @@ function addMatchModal({ handleClose, show, appendMatch }) {
 						Close
 					</Button>
 					<Button variant="success" onClick={handleAddMatch}>
-						Add Match
+						{isEdit ? 'Edit' : 'Add'} Match
 					</Button>
 				</Modal.Footer>
 			</Modal>
@@ -197,7 +254,6 @@ function validateForm(data) {
 	const { team1, team2, stadium, mainReferee, linesMan1, linesMan2, date } =
 		data;
 
-	console.log(data);
 	if (
 		!team1 ||
 		!team2 ||
@@ -227,4 +283,11 @@ function validateForm(data) {
 	}
 
 	return null;
+}
+
+function isBiggerStadium(stadium1, stadium2) {
+	return (
+		stadium1.VIPlounge.width >= stadium2.VIPlounge.width &&
+		stadium1.VIPlounge.height >= stadium2.VIPlounge.height
+	);
 }

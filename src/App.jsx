@@ -13,6 +13,7 @@ import {
 	AdminStadiums,
 	StadiumsScreen,
 	MatchesScreen,
+	MatchDetails,
 } from './pages';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
 							<Route path="user" element={<UserProfile />} />
 							<Route path="stadiums" element={<StadiumsScreen />} />
 							<Route path="matches" element={<MatchesScreen />} />
+							<Route path="matches/:id" element={<MatchDetails />} />
 
 							{/* Admin Pages */}
 							<Route path="admin/dashboard" element={<Dashboard />} />

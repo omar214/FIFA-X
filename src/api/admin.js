@@ -26,3 +26,7 @@ export const fetchAddMatch = async (match) => {
 	const { data: res } = await API.post('/matches', match);
 	return res;
 };
+export const fetchEditMatch = async (id, match) => {
+	const { data: res } = await API.patch(`/matches/${id}`, match);
+	return res;
+};
