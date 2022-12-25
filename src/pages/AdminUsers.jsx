@@ -1,14 +1,12 @@
 import { Container, Table, Button, Alert, Badge, Form } from 'react-bootstrap';
-
 import { useNavigate, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import API from '../api/api.js';
 import { CircularProgress } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import useProtection from '../hooks/useProtection.jsx';
 import { fetchDeleteUser, fetchUsers } from '../api/admin.js';
-import { isAdmin, isManager } from '../utils/index.js';
+import { isAdmin, isManager, updateToaster } from '../utils/index.js';
 
 const AdminUsers = () => {
 	const { currentUser } = useSelector((state) => state.user);
@@ -38,18 +36,19 @@ const AdminUsers = () => {
 	}, [currentUser, navigate]);
 
 	const handleSetManger = async (isManager, id) => {
+		const toastId = toast.loading('updating user...');
 		try {
 			await API.patch(`/users/${id}`, { isFan: true, isManager });
-			toast.dismiss();
-			toast.success('user updated Successfully');
+
+			updateToaster(toastId, 'user updated successfully', toast.TYPE.SUCCESS);
 		} catch (error) {
-			toast.dismiss();
-			toast.error('Error While setting user as manager');
+			updateToaster(toastId, 'Error while updating User', toast.TYPE.ERROR);
 			console.log(error.message);
 		}
 	};
 
 	const handleDeletUser = async (id) => {
+		const toastId = toast.loading('Deleting user...');
 		try {
 			await fetchDeleteUser(id);
 			const filterd = users.items.filter((e) => e.id !== id);
@@ -58,11 +57,9 @@ const AdminUsers = () => {
 				error: false,
 				items: filterd,
 			});
-			toast.dismiss();
-			toast.success('user deleted Successfully');
+			updateToaster(toastId, 'user updated successfully', toast.TYPE.SUCCESS);
 		} catch (error) {
-			toast.dismiss();
-			toast.error('Error While deleting user');
+			updateToaster(toastId, 'Error While deleting user', toast.TYPE.ERROR);
 			console.log(error.message);
 		}
 	};

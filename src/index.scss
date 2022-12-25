@@ -34,3 +34,17 @@ main {
 // .text-primary {
 // 	color: $mainColor !important;
 // }
+
+.vertical-center {
+	vertical-align: middle;
+}
+
+.reserve-span {
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+}
+
+.table-responsive {
+	height: 100%;
+}

@@ -63,7 +63,7 @@ const StadiumsScreen = () => {
 			<Row className="d-flex justify-content-center">
 				<Col xs={12} md={10}>
 					{loading ? (
-						<h4>Loading .... </h4>
+						<CircularProgress />
 					) : error ? (
 						<Alert variant="danger"> erro while fetching stadiums </Alert>
 					) : (
