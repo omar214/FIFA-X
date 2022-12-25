@@ -30,3 +30,7 @@ export const fetchEditMatch = async (id, match) => {
 	const { data: res } = await API.patch(`/matches/${id}`, match);
 	return res;
 };
+export const fetchReservations = async (id) => {
+	const { data: res } = await API.get(`/matches/${id}/reservations`);
+	return res;
+};

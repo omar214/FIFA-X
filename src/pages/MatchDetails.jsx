@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react';
 import API from '../api/api.js';
 import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from 'react-toastify';
-import { MatchCard, StadiumCard } from '../components';
-import { Button } from 'react-bootstrap';
+import { MatchCard, Reservation, StadiumCard } from '../components';
+import { Button, Stack } from 'react-bootstrap';
 import { AddMatchModal } from '../components';
 import { useSelector } from 'react-redux';
 import { isManager } from '../utils';
@@ -43,7 +43,7 @@ const MatchesDetails = () => {
 	};
 
 	return (
-		<Container className="mt-3 pb-4">
+		<Container className="mt-3 pb-5">
 			{!isPassed(match) && isManager(currentUser) && show && (
 				<AddMatchModal
 					show={show}
@@ -68,12 +68,66 @@ const MatchesDetails = () => {
 			<Row className="d-flex justify-content-center">
 				<Col xs={12} md={10}>
 					{loading ? (
-						<h4>Loading .... </h4>
+						<CircularProgress />
 					) : error ? (
 						<Alert variant="danger"> erro while fetching stadiums </Alert>
 					) : (
-						<MatchCard match={match} showDetails={false} />
+						<>
+							<MatchCard match={match} showDetails={false} />
+						</>
 					)}
+				</Col>
+			</Row>
+			<Row className="my-3">
+				<Col>
+					<h2 className="text-primary "> Reservations </h2>
+				</Col>
+			</Row>
+			<Row className="my-3 p-3 bg-light">
+				<Col className=" d-flex align-items-center justify-content-center">
+					<Stack className="align-items-center">
+						<span
+							style={{
+								width: '20px',
+								height: '20px',
+								display: 'inline-block',
+							}}
+							className="text-bg-danger mx-2 "
+						/>
+						<span className="fw-bold">Reserved</span>
+					</Stack>
+				</Col>
+				<Col className=" d-flex align-items-center justify-content-center">
+					<Stack className="align-items-center">
+						<span
+							style={{
+								width: '20px',
+								height: '20px',
+								display: 'inline-block',
+							}}
+							className="bg-success mx-2"
+						/>
+						<span className="fw-bold">User Reserved</span>
+					</Stack>
+				</Col>
+				<Col className=" d-flex align-items-center justify-content-center">
+					<Stack className="align-items-center">
+						<span
+							style={{
+								width: '20px',
+								height: '20px',
+								display: 'inline-block',
+							}}
+							className="bg-secondary mx-2"
+						/>
+						<span className="fw-bold">Empty</span>
+					</Stack>
+				</Col>
+			</Row>
+
+			<Row className="d-flex justify-content-center">
+				<Col xs={12} md={10}>
+					<Reservation match={match} />
 				</Col>
 			</Row>
 		</Container>
@@ -86,4 +140,31 @@ function isPassed(match) {
 	const date = new Date(match.date);
 	const now = new Date();
 	return date < now;
+}
+
+{
+	/* <ul className="showcase">
+	<li>
+		<div className="seat"></div>
+		<small>Available</small>
+	</li>
+	<li>
+		<div className="seat selected"></div>
+		<small>Selected</small>
+	</li>
+	<li>
+		<div className="seat sold"></div>
+		<small>Sold</small>
+	</li>
+</ul>; */
+}
+
+{
+	/* {[...Array(match.stadium.VIPlounge.width)].map((_, i) => (
+									<div className="row">
+										{[...Array(match.stadium.VIPlounge.height)].map((_, j) => (
+											<div className="seat sold" />
+										))}
+									</div>
+								))} */
 }
