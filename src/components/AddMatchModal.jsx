@@ -152,7 +152,7 @@ function addMatchModal({
 						{/* Stadium */}
 						<Form.Group className="mb-3">
 							<Form.Label className="fw-bold "> Stadium</Form.Label>
-							<Form.Select name="stadium">
+							<Form.Select name="stadium" disabled={isEdit}>
 								{stadiums.map((stadium) => (
 									<option
 										key={stadium.id}

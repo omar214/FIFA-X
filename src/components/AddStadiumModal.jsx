@@ -26,6 +26,14 @@ function AddStadiumModal({ handleClose, show, appendStadium }) {
 		if (!name || !description || !width || !height || !image)
 			return setErrorMessage('Please Enter All Fields');
 
+		if (width < 10 || height < 10) {
+			return setErrorMessage('Width and Height must be greater than 10');
+		}
+
+		if (width > 50 || height > 50) {
+			return setErrorMessage('Width and Height must be less than 50');
+		}
+
 		try {
 			const res = await fetchAddStadium({
 				name,
@@ -38,9 +46,11 @@ function AddStadiumModal({ handleClose, show, appendStadium }) {
 			appendStadium(res.data);
 
 			formRef.current.reset();
+			toast.success('Stadium Added Successfully');
 			handleClose();
 		} catch (error) {
 			setErrorMessage('Error while Adding Stadium');
+			toast.error('Error while Adding Stadium');
 			console.log(error);
 		}
 	};
