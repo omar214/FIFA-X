@@ -8,12 +8,11 @@ import {
 	Signup,
 	UserProfile,
 	AdminUsers,
-	AdminUserEdit,
 	Dashboard,
-	AdminStadiums,
 	StadiumsScreen,
 	MatchesScreen,
 	MatchDetails,
+	UserReservation,
 } from './pages';
 
 function App() {
@@ -39,12 +38,11 @@ function App() {
 							<Route path="stadiums" element={<StadiumsScreen />} />
 							<Route path="matches" element={<MatchesScreen />} />
 							<Route path="matches/:id" element={<MatchDetails />} />
+							<Route path="user-reservation" element={<UserReservation />} />
 
 							{/* Admin Pages */}
 							<Route path="admin/dashboard" element={<Dashboard />} />
 							<Route path="admin/users" element={<AdminUsers />} />
-							<Route path="admin/users/:id" element={<AdminUserEdit />} />
-							<Route path="admin/stadiums" element={<AdminStadiums />} />
 
 							<Route
 								path="*"

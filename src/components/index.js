@@ -5,3 +5,5 @@ export { default as AddMatchModal } from './AddMatchModal.jsx';
 export { default as StadiumCard } from './StadiumCard.jsx';
 export { default as MatchCard } from './MatchCard.jsx';
 export { default as Reservation } from './Reservation.jsx';
+export { default as ReservationCard } from './ReservationCard.jsx';
+export { default as TicketsTable } from './TicketsTable.jsx';
