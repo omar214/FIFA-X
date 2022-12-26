@@ -56,11 +56,13 @@ function MyNavbar() {
 								<NavDropdown.Item as={Link} to="user-reservation">
 									Reservation History
 								</NavDropdown.Item>
-								<NavDropdown.Divider />
 								{isAdmin(currentUser) && (
-									<NavDropdown.Item as={Link} to="admin/users">
-										All USERS
-									</NavDropdown.Item>
+									<>
+										<NavDropdown.Divider />
+										<NavDropdown.Item as={Link} to="admin/users">
+											All USERS
+										</NavDropdown.Item>
+									</>
 								)}
 								<NavDropdown.Divider />
 								<NavDropdown.Item onClick={handleLogOut}>

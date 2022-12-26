@@ -153,18 +153,6 @@ function addMatchModal({
 							</Form.Select>
 						</Form.Group>
 
-						{/* Seat Price */}
-						<Form.Group className="mb-3">
-							<Form.Label className="fw-bold "> Seat Price</Form.Label>
-							<Form.Control
-								type="number"
-								name="seatPrice"
-								min={0}
-								placeholder="Enter Seat Price ..."
-								defaultValue={isEdit ? match.seatPrice : ''}
-							/>
-						</Form.Group>
-
 						{/* Stadium */}
 						<Form.Group className="mb-3">
 							<Form.Label className="fw-bold "> Stadium</Form.Label>
@@ -180,6 +168,18 @@ function addMatchModal({
 									</option>
 								))}
 							</Form.Select>
+						</Form.Group>
+
+						{/* Seat Price */}
+						<Form.Group className="mb-3">
+							<Form.Label className="fw-bold "> Seat Price</Form.Label>
+							<Form.Control
+								type="number"
+								name="seatPrice"
+								min={0}
+								placeholder="Enter Seat Price ..."
+								defaultValue={isEdit ? match.seatPrice : ''}
+							/>
 						</Form.Group>
 
 						{/* Main Ref */}
