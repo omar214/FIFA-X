@@ -23,16 +23,14 @@ const TicketsTable = ({ tickets }) => {
 				<tbody>
 					{tickets.map((el, idx) => (
 						<tr className="my-2 text-primary" key={idx}>
-							<>
-								<td className=" fw-bold text-center">
-									<span className="text-primary ms-2">
-										C {el.seat.x} * R {el.seat.y}
-									</span>
-								</td>
-								<td className="text-center">
-									<span className="fw-bold mt-2">{el.ticketNumber}</span>
-								</td>
-							</>
+							<td className=" fw-bold text-center">
+								<span className="text-primary ms-2">
+									R {el.seat.y} * C {el.seat.x}
+								</span>
+							</td>
+							<td className="text-center">
+								<span className="fw-bold mt-2">{el.ticketNumber}</span>
+							</td>
 						</tr>
 					))}
 				</tbody>

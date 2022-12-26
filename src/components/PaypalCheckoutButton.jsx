@@ -3,7 +3,7 @@ import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { useEffect, useState } from 'react';
 import API from '../api/api.js';
 import { toast } from 'react-toastify';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const clientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
 
@@ -15,6 +15,7 @@ const PaypalCheckoutButton = ({
 }) => {
 	const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 	const parmas = useParams();
+	const navigate = useNavigate();
 	const { id: matchId } = parmas;
 
 	const createOrder = async () => {
@@ -41,6 +42,7 @@ const PaypalCheckoutButton = ({
 
 			setReservations((prev) => [...prev, ...res.data]);
 			setUserReservations([]);
+			navigate('/user-reservation');
 			console.log(res);
 			toast.success('Order Paid Successfully');
 		} catch (err) {
