@@ -82,7 +82,10 @@ function addMatchModal({
 			linesMan2,
 			date,
 			seatPrice,
-			name: `${team1.name} vs ${team2.name}`,
+			name: `${getTeamNameById(teams, team1)} vs ${getTeamNameById(
+				teams,
+				team2,
+			)}`,
 		};
 		try {
 			let res, sucessMsg;
@@ -323,4 +326,8 @@ function isBiggerStadium(stadium1, stadium2) {
 		stadium1.VIPlounge.width >= stadium2.VIPlounge.width &&
 		stadium1.VIPlounge.height >= stadium2.VIPlounge.height
 	);
+}
+
+function getTeamNameById(teams, id) {
+	return teams.find((team) => team.id === id).name;
 }
