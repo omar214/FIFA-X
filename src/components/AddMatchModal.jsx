@@ -48,6 +48,7 @@ function addMatchModal({
 
 		let team1 = formRef.current.team1.value,
 			team2 = formRef.current.team2.value,
+			seatPrice = formRef.current.seatPrice.value,
 			stadium = formRef.current.stadium.value,
 			mainReferee = formRef.current.mainReferee.value,
 			linesMan1 = formRef.current.linesMan1.value,
@@ -58,6 +59,7 @@ function addMatchModal({
 			team1,
 			team2,
 			stadium,
+			seatPrice,
 			mainReferee,
 			linesMan1,
 			linesMan2,
@@ -79,6 +81,8 @@ function addMatchModal({
 			linesMan1,
 			linesMan2,
 			date,
+			seatPrice,
+			name: `${team1.name} vs ${team2.name}`,
 		};
 		try {
 			let res, sucessMsg;
@@ -147,6 +151,18 @@ function addMatchModal({
 									</option>
 								))}
 							</Form.Select>
+						</Form.Group>
+
+						{/* Seat Price */}
+						<Form.Group className="mb-3">
+							<Form.Label className="fw-bold "> Seat Price</Form.Label>
+							<Form.Control
+								type="number"
+								name="seatPrice"
+								min={0}
+								placeholder="Enter Seat Price ..."
+								defaultValue={isEdit ? match.seatPrice : ''}
+							/>
 						</Form.Group>
 
 						{/* Stadium */}
@@ -251,14 +267,23 @@ function addMatchModal({
 export default addMatchModal;
 
 function validateForm(data) {
-	const { team1, team2, stadium, mainReferee, linesMan1, linesMan2, date } =
-		data;
+	const {
+		team1,
+		team2,
+		stadium,
+		mainReferee,
+		linesMan1,
+		linesMan2,
+		date,
+		seatPrice,
+	} = data;
 
 	if (
 		!team1 ||
 		!team2 ||
 		!stadium ||
 		!mainReferee ||
+		!seatPrice ||
 		!linesMan1 ||
 		!linesMan2 ||
 		!date
@@ -268,6 +293,14 @@ function validateForm(data) {
 
 	if (team1 === 'team1' || team2 === 'team2' || stadium === 'stadium') {
 		return 'All fields are required';
+	}
+
+	if (isNaN(seatPrice)) {
+		return 'Seat Price must be a number';
+	}
+
+	if (seatPrice < 0) {
+		return 'Seat Price must be greater than 0';
 	}
 
 	if (team1 === team2) {
