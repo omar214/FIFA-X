@@ -8,10 +8,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import store from './redux/store.js';
 import { Provider } from 'react-redux';
 
+// Paypal
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<App />
+			<PayPalScriptProvider
+				deferLoading={true}
+			>
+				<App />
+			</PayPalScriptProvider>
 		</Provider>
 	</React.StrictMode>,
 );

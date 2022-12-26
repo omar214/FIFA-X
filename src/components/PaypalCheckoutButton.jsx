@@ -1,51 +1,65 @@
 import { CircularProgress } from '@mui/material';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import API from '../api/api.js';
 import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
 
-const PaypalCheckoutButton = ({ totalPrice, orderId, setOrderDetails }) => {
+const clientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
+
+const PaypalCheckoutButton = ({
+	seats,
+	isDisabled,
+	setReservations,
+	setUserReservations,
+}) => {
 	const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+	const parmas = useParams();
+	const { id: matchId } = parmas;
 
-	const createOrder = async (data, actions) => {
-		return actions.order
-			.create({
-				purchase_units: [
-					{
-						description: 'order Desc',
-						amount: {
-							value: totalPrice,
-						},
-					},
-				],
-			})
-			.then((orderID) => {
-				toast.dismiss();
-				toast.success('Order Paid Successfully');
-				return orderID;
+	const createOrder = async () => {
+		try {
+			const { data: res } = await API.post(`matches/${matchId}/reservations`, {
+				seats,
 			});
+
+			return res.data.paypalOrderId;
+		} catch (error) {
+			console.log(error);
+			toast.error('Error in creating Order');
+		}
 	};
 
 	const onApprove = async (data, actions) => {
 		try {
-			const { data: res } = await API.put(`/orders/${orderId}/pay`);
-			setOrderDetails((prev) => ({ ...prev, isPaid: true }));
+			const paypalOrderId = data.orderID;
+
+			const confirmUrl = `matches/${matchId}/reservations/capture-payment`;
+			const { data: res } = await API.post(confirmUrl, {
+				orderId: paypalOrderId,
+			});
+
+			setReservations((prev) => [...prev, ...res.data]);
+			setUserReservations([]);
 			console.log(res);
+			toast.success('Order Paid Successfully');
 		} catch (err) {
 			console.log(err);
-			// 	toast.error(getError(err));
+			toast.error('error while paying Order');
 		}
 	};
 	function onError(err) {
 		console.log(err);
-		toast.dismiss();
+		// toast.dismiss();
 		toast.error('error while paying Order');
-		// toast.error(getError(err));
+	}
+	function onCancel(data, actions) {
+		// toast.dismiss();
+		toast.error('Order Payment Cancelled');
 	}
 
 	useEffect(() => {
 		const loadPaypalScript = async () => {
-			const clientId = import.meta.env.REACT_APP_PAYPAL_CLIENT_ID;
 			paypalDispatch({
 				type: 'resetOptions',
 				value: {
@@ -57,15 +71,30 @@ const PaypalCheckoutButton = ({ totalPrice, orderId, setOrderDetails }) => {
 		};
 		loadPaypalScript();
 	}, [paypalDispatch]);
+
+	useEffect(() => {
+		paypalDispatch({
+			type: 'resetOptions',
+			value: {
+				'client-id': clientId,
+				currency: 'USD',
+			},
+		});
+		paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
+	}, [isDisabled, seats]);
+
 	return (
 		<>
 			{isPending ? (
 				<CircularProgress />
 			) : (
 				<PayPalButtons
+					className="mt-4 w-100"
 					createOrder={createOrder}
 					onApprove={onApprove}
 					onError={onError}
+					onCancel={onCancel}
+					disabled={isDisabled}
 				/>
 			)}
 		</>

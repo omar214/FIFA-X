@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Button, Col, Row, Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { fetchReservations } from '../api/admin.js';
+import PaypalCheckoutButton from './PaypalCheckoutButton.jsx';
 
 const Reservation = ({ match }) => {
 	const [width, setWidth] = useState(0);
@@ -79,7 +80,7 @@ const Reservation = ({ match }) => {
 		<>
 			<div
 				style={{
-					height: '600px',
+					maxHeight: '600px',
 					overflow: 'auto',
 				}}
 			>
@@ -122,13 +123,21 @@ const Reservation = ({ match }) => {
 					</tbody>
 				</Table>
 			</div>
-			{userReservations.length > 0 && (
-				<Row className="mt-3">
-					<Col>
-						<Button variant="success">Confirm Reservation</Button>
-					</Col>
-				</Row>
-			)}
+			{/* {userReservations.length > 0 && ( */}
+			<Row className="mt-3">
+				<Col>
+					<h3 className="text-primary">Confirm Reservation</h3>
+					<div className="w-100">
+						<PaypalCheckoutButton
+							isDisabled={userReservations.length === 0}
+							seats={userReservations}
+							setReservations={setReservations}
+							setUserReservations={setUserReservations}
+						/>
+					</div>
+				</Col>
+			</Row>
+			{/* )} */}
 		</>
 	);
 };
