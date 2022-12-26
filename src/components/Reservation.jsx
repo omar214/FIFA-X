@@ -2,6 +2,7 @@ import { CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Col, Row, Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { fetchReservations } from '../api/admin.js';
 import PaypalCheckoutButton from './PaypalCheckoutButton.jsx';
 
@@ -45,7 +46,17 @@ const Reservation = ({ match }) => {
 			row,
 			col,
 		);
-		if (isFound) return;
+		if (isFound) {
+			toast.dismiss();
+			toast.error('This seat is already reserved');
+			return;
+		}
+
+		if (!currentUser) {
+			toast.dismiss();
+			toast.info('Please login to reserve a seat');
+			return;
+		}
 
 		isFound = isUserReserved(userReservations, row, col);
 		let tempUserReservation = deepCopy(userReservations);

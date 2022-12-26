@@ -6,11 +6,15 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from 'react-toastify';
 import { ReservationCard } from '../components';
 import { Link } from 'react-router-dom';
+import useProtection from '../hooks/useProtection.jsx';
+import { useSelector } from 'react-redux';
 
 const UserReservation = () => {
 	const [reservations, setReservations] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
+	const { currentUser } = useSelector((state) => state.user);
+	useProtection();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -25,7 +29,7 @@ const UserReservation = () => {
 				toast.error('Error in fetching Reservations');
 			}
 		};
-		fetchData();
+		currentUser && fetchData();
 	}, []);
 
 	const onCancel = (id) => {
@@ -48,7 +52,7 @@ const UserReservation = () => {
 					) : reservations.length === 0 ? (
 						<>
 							<Alert variant="info">You have no reservations yet</Alert>
-							<Button variant="outline-primary" as={Link} to='/matches'>
+							<Button variant="outline-primary" as={Link} to="/matches">
 								Reserve Now
 							</Button>
 						</>

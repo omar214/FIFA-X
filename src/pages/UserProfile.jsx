@@ -30,6 +30,7 @@ const UserProfile = () => {
 	const [isSuccess, setIsSucess] = useState(false);
 	const formRef = useRef(null);
 	const { currentUser } = useSelector((state) => state.user);
+	useProtection();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -62,6 +63,9 @@ const UserProfile = () => {
 			updateToaster(toastId, 'Error While editing user', toast.TYPE.ERROR);
 		}
 	};
+
+	if (!currentUser) return null;
+
 	return (
 		<Container className="pt-4">
 			<Row className="d-flex justify-content-center">
@@ -75,7 +79,7 @@ const UserProfile = () => {
 										placeholder="User Name"
 										type="text"
 										name="userName"
-										defaultValue={currentUser.username}
+										defaultValue={currentUser?.username || ''}
 										required
 										disabled
 									/>
@@ -90,7 +94,7 @@ const UserProfile = () => {
 										name="email"
 										required
 										disabled
-										defaultValue={currentUser.email}
+										defaultValue={currentUser?.email || ''}
 									/>
 									{handleErrorMessages(errorMessage.email)}
 								</FloatingLabel>
@@ -105,7 +109,7 @@ const UserProfile = () => {
 										type="text"
 										name="firstName"
 										required
-										defaultValue={currentUser.firstName}
+										defaultValue={currentUser?.firstName || ''}
 									/>
 									{handleErrorMessages(errorMessage.firstName)}
 								</FloatingLabel>
@@ -117,7 +121,7 @@ const UserProfile = () => {
 										type="text"
 										name="lastName"
 										required
-										defaultValue={currentUser.lastName}
+										defaultValue={currentUser?.lastName || ''}
 									/>
 									{handleErrorMessages(errorMessage.lastName)}
 								</FloatingLabel>
@@ -129,7 +133,7 @@ const UserProfile = () => {
 								<FloatingLabel label="Gender" className="mb-3">
 									<Form.Select
 										name="gender"
-										defaultValue={currentUser.gender}
+										defaultValue={currentUser?.gender || ''}
 										required
 									>
 										<option disabled defaultChecked>
@@ -173,7 +177,7 @@ const UserProfile = () => {
 										type="date"
 										name="birthDate"
 										required
-										defaultValue={moment(currentUser.birthDate).format(
+										defaultValue={moment(currentUser?.birthDate).format(
 											'YYYY-MM-DD',
 										)}
 										// defaultValue={'2021-01-01'}

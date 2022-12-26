@@ -7,10 +7,12 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { fetchDeleteUser, fetchUsers } from '../api/admin.js';
 import { isAdmin, isManager, updateToaster } from '../utils/index.js';
+import useProtection from '../hooks/useProtection.jsx';
 
 const AdminUsers = () => {
 	const { currentUser } = useSelector((state) => state.user);
 	const navigate = useNavigate();
+	useProtection({ admin: true });
 
 	const [users, setUsers] = useState({
 		items: [],
@@ -32,7 +34,7 @@ const AdminUsers = () => {
 			}
 		};
 
-		currentUser && fecthData();
+		currentUser && isAdmin(currentUser) && fecthData();
 	}, [currentUser, navigate]);
 
 	const handleSetManger = async (isManager, id) => {

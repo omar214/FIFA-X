@@ -2,7 +2,6 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 const StadiumCard = ({ stadium }) => {
-	console.log(stadium);
 	return (
 		<div className="w-md-50 p-3 shadow-lg rounded-4 mb-3">
 			<Row>
@@ -22,7 +21,10 @@ const StadiumCard = ({ stadium }) => {
 						style={{ height: '200px' }}
 					/>
 				</Col>
-				<Col xs={8} className="text-center d-flex flex-column gap-3 justify-content-center">
+				<Col
+					xs={8}
+					className="text-center d-flex flex-column gap-3 justify-content-center"
+				>
 					{/* <h2 className="text-primary"> {stadium.name} </h2> */}
 					<h4> {stadium.description}</h4>
 					<h5 className="d-block text-primary">
