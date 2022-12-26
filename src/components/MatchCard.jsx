@@ -30,15 +30,21 @@ const MatchCard = ({ match, showDetails = true }) => {
 					<p className="mt-3 text-primary fw-bold"> {match.team2.name} </p>
 				</Col>
 			</Row>
-
 			{/* Stadium */}
 			<Row className="mb-3">
-				<Col className="d-flex  justify-content-center align-items-center text-center">
-					<span className="fw-bold"> Stadium : </span>
-					<b className="ms-1 text-primary">{match.stadium.name}</b>
+				<Col className="d-flex flex-column justify-content-center align-items-center text-center">
+					<div className="d-flex justify-content-evenly w-100">
+						<h5 className="fw-bold mb-2">
+							Stadium :<b className="ms-1 text-primary">{match.stadium.name}</b>
+						</h5>
+						<p className="fw-bold">
+							Seat Price :
+							<b className="ms-1 text-primary">{match.seatPrice} $</b>
+						</p>
+					</div>
 				</Col>
 			</Row>
-
+			<hr className="w-50 mx-auto" />
 			{/* Referees */}
 			<Row className="justify-content-center">
 				<Col className="d-flex  justify-content-center align-items-center">
@@ -54,11 +60,11 @@ const MatchCard = ({ match, showDetails = true }) => {
 					<b className="ms-1 text-primary">{match.linesMan2}</b>
 				</Col>
 			</Row>
-
+			<hr className="w-50 mx-auto" />
 			{/* Date */}
-			<Row className="justify-content-center">
+			<Row className="justify-content-center text-center">
 				<Col className="d-flex  justify-content-center align-items-center">
-					<h5 className="mt-3 ms-1 text-primary">
+					<h5 className="mt-3 ms-1 text-primary fw-bold">
 						{moment(match.date).isBefore(Date.now())
 							? `Ended : ${moment(match.date).fromNow()}`
 							: `Played in : ${moment(match.date).format(
