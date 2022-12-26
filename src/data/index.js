@@ -216,7 +216,6 @@ export const data = {
 		'Sri Lankan',
 		'St Helenian',
 		'St Lucian',
-		'Stateless',
 		'Sudanese',
 		'Surinamese',
 		'Swazi',

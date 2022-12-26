@@ -65,7 +65,11 @@ const MatchesScreen = () => {
 					{loading ? (
 						<CircularProgress />
 					) : error ? (
-						<Alert variant="danger"> erro while fetching stadiums </Alert>
+						<Alert variant="danger"> error while fetching Matches </Alert>
+					) : matches.length === 0 ? (
+						<Alert variant="info">
+							No matches found Managers Will add soon
+						</Alert>
 					) : (
 						matches.map((match) => <MatchCard key={match.id} match={match} />)
 					)}

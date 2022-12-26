@@ -5,6 +5,7 @@ import API from '../api/api.js';
 import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from 'react-toastify';
 import { ReservationCard } from '../components';
+import { Link } from 'react-router-dom';
 
 const UserReservation = () => {
 	const [reservations, setReservations] = useState([]);
@@ -28,9 +29,7 @@ const UserReservation = () => {
 	}, []);
 
 	const onCancel = (id) => {
-		setReservations((prev) =>
-			prev.filter((reserve) => reserve.orderId !== id),
-		);
+		setReservations((prev) => prev.filter((reserve) => reserve.orderId !== id));
 	};
 
 	return (
@@ -46,6 +45,13 @@ const UserReservation = () => {
 						<CircularProgress />
 					) : error ? (
 						<Alert variant="danger"> error while fetching Reservations </Alert>
+					) : reservations.length === 0 ? (
+						<>
+							<Alert variant="info">You have no reservations yet</Alert>
+							<Button variant="outline-primary" as={Link} to='/matches'>
+								Reserve Now
+							</Button>
+						</>
 					) : (
 						reservations.map((el, idx) => (
 							<ReservationCard

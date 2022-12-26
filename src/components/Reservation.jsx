@@ -26,11 +26,6 @@ const Reservation = ({ match }) => {
 				setLoading(false);
 				setError(false);
 
-				// res.data.forEach((el) => {
-				// 	if (el.user.id === currentUser.id)
-				// 		setUserReservations((prev) => [...prev, el.seat]);
-				// });
-
 				const tempWidth = match?.stadium?.VIPlounge?.width || 0;
 				const tempHeight = match?.stadium?.VIPlounge?.height || 0;
 				setWidth(tempWidth);
@@ -123,21 +118,21 @@ const Reservation = ({ match }) => {
 					</tbody>
 				</Table>
 			</div>
-			{/* {userReservations.length > 0 && ( */}
-			<Row className="mt-3">
-				<Col>
-					<h3 className="text-primary">Confirm Reservation</h3>
-					<div className="w-100">
-						<PaypalCheckoutButton
-							isDisabled={userReservations.length === 0}
-							seats={userReservations}
-							setReservations={setReservations}
-							setUserReservations={setUserReservations}
-						/>
-					</div>
-				</Col>
-			</Row>
-			{/* )} */}
+			{currentUser && (
+				<Row className="mt-3">
+					<Col>
+						<h3 className="text-primary">Confirm Reservation</h3>
+						<div className="w-100">
+							<PaypalCheckoutButton
+								isDisabled={userReservations.length === 0}
+								seats={userReservations}
+								setReservations={setReservations}
+								setUserReservations={setUserReservations}
+							/>
+						</div>
+					</Col>
+				</Row>
+			)}
 		</>
 	);
 };

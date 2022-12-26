@@ -66,6 +66,10 @@ const StadiumsScreen = () => {
 						<CircularProgress />
 					) : error ? (
 						<Alert variant="danger"> erro while fetching stadiums </Alert>
+					) : stadiums.length === 0 ? (
+						<Alert variant="info">
+							There Are no Stadiums Added Yet Managers will add soon
+						</Alert>
 					) : (
 						stadiums.map((stadium) => (
 							<StadiumCard key={stadium.id} stadium={stadium} />

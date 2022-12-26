@@ -57,7 +57,7 @@ const AdminUsers = () => {
 				error: false,
 				items: filterd,
 			});
-			updateToaster(toastId, 'user updated successfully', toast.TYPE.SUCCESS);
+			updateToaster(toastId, 'user Deleted successfully', toast.TYPE.SUCCESS);
 		} catch (error) {
 			updateToaster(toastId, 'Error While deleting user', toast.TYPE.ERROR);
 			console.log(error.message);
@@ -72,6 +72,8 @@ const AdminUsers = () => {
 					<CircularProgress />
 				) : users.error ? (
 					<Alert variant="danger">Error While fetching users</Alert>
+				) : users.items.length === 0 ? (
+					<Alert variant="info">No Users Found</Alert>
 				) : (
 					<Table hover responsive>
 						<thead className="border-bottom border-2 border-dark">

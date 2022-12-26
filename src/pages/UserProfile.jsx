@@ -18,6 +18,7 @@ import { extractValues, validateSignup } from '../utils/validateSignup.js';
 import { data } from '../data';
 import moment from 'moment';
 import { fetchEditProfile } from '../api/user.js';
+import { updateToaster } from '../utils/index.js';
 
 const handleErrorMessages = (error) => {
 	return error && <div className="text-danger mb-2">{error}</div>;
@@ -49,14 +50,16 @@ const UserProfile = () => {
 		if (Object.keys(tempErrors).length > 0) return;
 
 		setErrorMessage(tempErrors);
+
+		const toastId = toast.loading('Editing User info...');
 		try {
 			const res = await fetchEditProfile(formValues);
-			formRef.current.reset();
-			toast.success('User Edited Successfully');
+			// formRef.current.reset();
+
+			updateToaster(toastId, 'User Edited Successfully', toast.TYPE.SUCCESS);
 			dispatch(loginSuccess(res.data));
 		} catch (error) {
-			toast.dismiss();
-			toast.error('Error While editing user');
+			updateToaster(toastId, 'Error While editing user', toast.TYPE.ERROR);
 		}
 	};
 	return (

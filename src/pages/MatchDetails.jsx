@@ -141,30 +141,3 @@ function isPassed(match) {
 	const now = new Date();
 	return date < now;
 }
-
-{
-	/* <ul className="showcase">
-	<li>
-		<div className="seat"></div>
-		<small>Available</small>
-	</li>
-	<li>
-		<div className="seat selected"></div>
-		<small>Selected</small>
-	</li>
-	<li>
-		<div className="seat sold"></div>
-		<small>Sold</small>
-	</li>
-</ul>; */
-}
-
-{
-	/* {[...Array(match.stadium.VIPlounge.width)].map((_, i) => (
-									<div className="row">
-										{[...Array(match.stadium.VIPlounge.height)].map((_, j) => (
-											<div className="seat sold" />
-										))}
-									</div>
-								))} */
-}
