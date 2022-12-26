@@ -8,7 +8,6 @@ import {
 	Signup,
 	UserProfile,
 	AdminUsers,
-	Dashboard,
 	StadiumsScreen,
 	MatchesScreen,
 	MatchDetails,
@@ -41,7 +40,6 @@ function App() {
 							<Route path="user-reservation" element={<UserReservation />} />
 
 							{/* Admin Pages */}
-							<Route path="admin/dashboard" element={<Dashboard />} />
 							<Route path="admin/users" element={<AdminUsers />} />
 
 							<Route

@@ -19,6 +19,7 @@ import { data } from '../data';
 import moment from 'moment';
 import { fetchEditProfile } from '../api/user.js';
 import { updateToaster } from '../utils/index.js';
+import ChangePasswordForm from '../components/ChangePasswordForm.jsx';
 
 const handleErrorMessages = (error) => {
 	return error && <div className="text-danger mb-2">{error}</div>;
@@ -67,7 +68,7 @@ const UserProfile = () => {
 	if (!currentUser) return null;
 
 	return (
-		<Container className="pt-4">
+		<Container className="pt-4 pb-5">
 			<Row className="d-flex justify-content-center">
 				<Col xs={12} md={10} lg={8}>
 					<h3 className="pb-3 text-primary">User Profile</h3>
@@ -191,6 +192,14 @@ const UserProfile = () => {
 							Submit
 						</Button>
 					</Form>
+				</Col>
+			</Row>
+
+			<hr className="w-75 mx-auto" />
+			<Row className="d-flex justify-content-center mt-4">
+				<Col xs={12} md={10} lg={8}>
+					<h3 className="pb-3 text-primary">Change Password</h3>
+					<ChangePasswordForm />
 				</Col>
 			</Row>
 		</Container>
