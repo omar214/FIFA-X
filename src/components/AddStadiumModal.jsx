@@ -7,6 +7,7 @@ import API from '../api/api.js';
 import { toast } from 'react-toastify';
 import { Col, Row } from 'react-bootstrap';
 import { fetchAddStadium } from '../api/admin.js';
+import { updateToaster } from '../utils/index.js';
 
 function AddStadiumModal({ handleClose, show, appendStadium }) {
 	const formRef = useRef(null);
@@ -34,6 +35,7 @@ function AddStadiumModal({ handleClose, show, appendStadium }) {
 			return setErrorMessage('Width and Height must be less than 50');
 		}
 
+		const toastId = toast.loading(`Adding Stadium...`);
 		try {
 			const res = await fetchAddStadium({
 				name,
@@ -46,11 +48,11 @@ function AddStadiumModal({ handleClose, show, appendStadium }) {
 			appendStadium(res.data);
 
 			formRef.current.reset();
-			toast.success('Stadium Added Successfully');
+			updateToaster(toastId, 'Stadium Added Successfully', toast.TYPE.SUCCESS);
 			handleClose();
 		} catch (error) {
 			setErrorMessage('Error while Adding Stadium');
-			toast.error('Error while Adding Stadium');
+			updateToaster(toastId, 'Error while Adding Stadium', toast.TYPE.ERROR);
 			console.log(error);
 		}
 	};

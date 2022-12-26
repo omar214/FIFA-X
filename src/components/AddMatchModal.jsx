@@ -13,6 +13,7 @@ import {
 } from '../api/admin.js';
 import { data } from '../data/index.js';
 import moment from 'moment';
+import { updateToaster } from '../utils/index.js';
 
 function addMatchModal({
 	handleClose,
@@ -87,6 +88,7 @@ function addMatchModal({
 				team2,
 			)}`,
 		};
+		const toastId = toast.loading(`${isEdit ? 'Editing' : 'Adding'} Match...`);
 		try {
 			let res, sucessMsg;
 			if (isEdit) {
@@ -100,7 +102,9 @@ function addMatchModal({
 			}
 			formRef.current.reset();
 			handleClose();
-			toast.success(sucessMsg);
+
+			updateToaster(toastId, sucessMsg, toast.TYPE.SUCCESS);
+			toast.success();
 		} catch (error) {
 			console.log(error);
 
@@ -110,7 +114,7 @@ function addMatchModal({
 
 			msg = msg || `Error in ${isEdit ? 'Editing' : 'Adding'} match`;
 			setErrorMessage(msg);
-			toast.error(msg);
+			updateToaster(toastId, msg, toast.TYPE.ERROR);
 		}
 	};
 
