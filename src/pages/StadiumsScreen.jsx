@@ -71,8 +71,8 @@ const StadiumsScreen = () => {
 							There Are no Stadiums Added Yet Managers will add soon
 						</Alert>
 					) : (
-						stadiums.map((stadium) => (
-							<StadiumCard key={stadium.id} stadium={stadium} />
+						stadiums.map((stadium,idx) => (
+							<StadiumCard key={stadium.id} stadium={stadium} idx={ idx} />
 						))
 					)}
 				</Col>
