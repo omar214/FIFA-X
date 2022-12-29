@@ -33,20 +33,23 @@ const ChangePasswordForm = () => {
 
 		const toastId = toast.loading('Updating Password...');
 		try {
-			// const res = await API.patch('/users/password', {
-			// 	oldPassword,
-			// 	newPassword,
-			// });
+			const res = await API.post('/auth/reset-password', {
+				password: newPassword,
+				passwordConfirm: confirmNewPassword,
+				oldPassword,
+			});
 
 			formRef.current.reset();
 			updateToaster(
 				toastId,
-				'Password updates Successfully',
+				'Password updated Successfully',
 				toast.TYPE.SUCCESS,
 			);
 		} catch (error) {
 			console.log(error);
-			updateToaster(toastId, 'Error While updating password', toast.TYPE.ERROR);
+			const msg =
+				error?.response?.data?.data?.message || 'Error While updating password';
+			updateToaster(toastId, msg, toast.TYPE.ERROR);
 		}
 	};
 

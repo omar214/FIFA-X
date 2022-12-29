@@ -47,7 +47,7 @@ const ReservationCard = ({ reservation, onCancel }) => {
 						<span className="text-primary ms-2">
 							{hasPassed(reservation.match.date)
 								? `Ended : ${moment(reservation.match.date).fromNow()}`
-								: moment(reservation.match.date).format('DD/MM/YYYY')}
+								: moment(reservation.match.date).format('DD/MM/YYYY -  h:mm a')}
 						</span>
 					</h5>
 					<h5 className="fw-bold mt-2">
