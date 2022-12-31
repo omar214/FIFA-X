@@ -6,35 +6,23 @@
 
 ## 📝 Table of Contents
 
-1. [FIFA X](#fifa-x)
-   1. [📝 Table of Contents](#-table-of-contents)
-   2. [🚩About](#about)
-   3. [✨ Features ](#-features-)
-   4. [💻Technologies Used](#technologies-used)
-   5. [🏁Getting Started ](#getting-started-)
-   6. [🎥 Demo](#-demo)
-   7. [🎥 screenshots](#-screenshots)
-      1. [Home Page](#home-page)
-      2. [Log in](#log-in)
-      3. [Sign up](#sign-up)
-      4. [Matches Page](#matches-page)
-      5. [User Reservation](#user-reservation)
-      6. [Stadiums page](#stadiums-page)
-      7. [All users](#all-users)
-      8. [User Profile](#user-profile)
-      9. [Add new match (for manager)](#add-new-match-for-manager)
-      10. [Add new Stadium (for manager)](#add-new-stadium-for-manager)
+- [About](#about)
+- [features](#features)
+- [Technologies used](#build)
+- [getting started](#start)
+- [Demo](#demo)
+- [screenshots](#screenshots)
 
 ## 🚩About<a name = "about"></a>
 
-- This is an online automated ticket reservation system for football matches in FIFA World Cup Qatar 2022.
+This is an online automated ticket reservation system for football matches in FIFA World Cup Qatar 2022.
 
-- The system allows a manager to create, manage, and maintain current and future matches.
+The system allows a manager to create, manage, and maintain current and future matches.
 
-- The system also allows the customers to reserve specific seats for the matches they want to attend.
+The system also allows the customers to reserve specific seats for the matches they want to attend.
 
-- The system is used by specific managers to keep track of matches
-- schedules, number of attendees, match officials and the registered users
+The system is used by specific managers to keep track of matches
+schedules, number of attendees, match officials and the registered users
 
 ## ✨ Features <a name = "features"></a>
 
