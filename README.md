@@ -7,6 +7,7 @@
 ## 📝 Table of Contents
 
 - [About](#about)
+- [Live](#live)
 - [features](#features)
 - [Technologies used](#build)
 - [getting started](#start)
@@ -23,6 +24,10 @@ The system also allows the customers to reserve specific seats for the matches t
 
 The system is used by specific managers to keep track of matches
 schedules, number of attendees, match officials and the registered users
+
+##  🔥Live <a name = "live"></a>
+
+Watch Live [here](https://fifa-world-cup.surge.sh/)
 
 ## ✨ Features <a name = "features"></a>
 
