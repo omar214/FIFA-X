@@ -39,10 +39,10 @@ function MyNavbar() {
 				<Navbar.Collapse id="responsive-navbar-nav">
 					<Nav className="ms-auto">
 						<Nav.Link as={Link} to="stadiums">
-							stadiums
+							Stadiums
 						</Nav.Link>
 						<Nav.Link as={Link} to="matches">
-							matches
+							Matches
 						</Nav.Link>
 						{currentUser ? (
 							<NavDropdown
@@ -66,12 +66,12 @@ function MyNavbar() {
 								)}
 								<NavDropdown.Divider />
 								<NavDropdown.Item onClick={handleLogOut}>
-									Log out
+									Logout
 								</NavDropdown.Item>
 							</NavDropdown>
 						) : (
 							<Nav.Link as={Link} to="login">
-								Log in
+								Login
 							</Nav.Link>
 						)}
 						{/* {isAdmin(currentUser) && (

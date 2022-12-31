@@ -4,9 +4,7 @@ const CopyRights = () => {
 	return (
 		<footer className="py-3 bg-dark">
 			<div className="container px-5">
-				<p className="m-0 text-center text-white">
-					Copyright © Your Website 2022
-				</p>
+				<p className="m-0 text-center text-white">Copyright © FIFA X 2022</p>
 			</div>
 		</footer>
 	);

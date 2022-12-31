@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy:surge": "yarn build && cd dist/ && cp index.html 200.html && surge --domain https://fifa-world-cup.surge.sh && cd .."
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
