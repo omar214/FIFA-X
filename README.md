@@ -8,24 +8,24 @@
 
 1. [FIFA X](#fifa-x)
    1. [📝 Table of Contents](#-table-of-contents)
-      1. [🚩About](#about)
-      2. [✨ Features ](#-features-)
-   2. [💻Technologies Used](#technologies-used)
-   3. [🏁Getting Started ](#getting-started-)
-   4. [🎥 Demo](#-demo)
-   5. [🎥 screenshots](#-screenshots)
+   2. [🚩About](#about)
+   3. [✨ Features ](#-features-)
+   4. [💻Technologies Used](#technologies-used)
+   5. [🏁Getting Started ](#getting-started-)
+   6. [🎥 Demo](#-demo)
+   7. [🎥 screenshots](#-screenshots)
       1. [Home Page](#home-page)
       2. [Log in](#log-in)
       3. [Sign up](#sign-up)
       4. [Matches Page](#matches-page)
-      5. [user Reservation](#user-reservation)
+      5. [User Reservation](#user-reservation)
       6. [Stadiums page](#stadiums-page)
       7. [All users](#all-users)
       8. [User Profile](#user-profile)
       9. [Add new match (for manager)](#add-new-match-for-manager)
       10. [Add new Stadium (for manager)](#add-new-stadium-for-manager)
 
-### 🚩About<a name = "about"></a>
+## 🚩About<a name = "about"></a>
 
 - This is an online automated ticket reservation system for football matches in FIFA World Cup Qatar 2022.
 
@@ -36,7 +36,7 @@
 - The system is used by specific managers to keep track of matches
 - schedules, number of attendees, match officials and the registered users
 
-### ✨ Features <a name = "features"></a>
+## ✨ Features <a name = "features"></a>
 
 **for user**
 
@@ -46,7 +46,7 @@
 - View vacant/reserved seats for each match.
 - Reserve a seat for a match & paymanet integration with paypal
 - show all user reservations
-- cancel reservation
+- cancel reservation **with paypal refund**
 - show stadiums information
 
 **for manager**
@@ -98,42 +98,9 @@ yarn start
 
 ## 🎥 Demo<a name = "demo"></a>
 
-<!--
 <div name = "demo" align="center" width=1189>
 
-**Home page & Sign in & Edit User**
-
-https://user-images.githubusercontent.com/60351557/192575420-c6dcc5ce-7ffa-474e-a46f-e1417463b2ab.mp4
-
-**Product Page & Cart & Checkout Steps**
-
-https://user-images.githubusercontent.com/60351557/192613910-a57c8874-e49b-4f64-a6e5-8ced825b8774.mp4
-
-**Search Page**
-
-https://user-images.githubusercontent.com/60351557/192614091-dd2119f8-4fc0-4f27-8854-87db6e7a993d.mp4
-
-**Paypal payment & Deliver Logic**
-
-https://user-images.githubusercontent.com/60351557/192614169-653e617a-1ab0-417a-abcf-5601f8a233b6.mp4
-
-**Stripe Payment**
-
-https://user-images.githubusercontent.com/60351557/192614226-9c1fa3c1-2bb1-48c4-9ada-4560ab7226b6.mp4
-
-**Admin Dashboard & Admin orders details**
-
-https://user-images.githubusercontent.com/60351557/192614274-e83e718a-2817-44d6-b437-2bc80cae8bf0.mp4
-
-**Admin ( Edit & Add & Delete) Products**
-
-https://user-images.githubusercontent.com/60351557/192614322-223dc69c-9a24-492f-b8ae-bb8c39ce6575.mp4
-
-**Admin ( Edit & Delete) Users**
-
-https://user-images.githubusercontent.com/60351557/192614346-598be757-5e44-491f-810b-b7828bba66f9.mp4
-
-</div> -->
+</div>
 
 ## 🎥 screenshots<a name = "screenshots"></a>
 
@@ -167,7 +134,7 @@ https://user-images.githubusercontent.com/60351557/192614346-598be757-5e44-491f-
 
   <hr />
 
-### user Reservation
+### User Reservation
 
 ![user Reservation Page](./screenshots/user-reservation.png)
 
