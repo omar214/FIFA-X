@@ -11,10 +11,19 @@
       1. [🚩About](#about)
       2. [✨ Features ](#-features-)
    2. [💻Technologies Used](#technologies-used)
-         1. [Frontend](#frontend)
    3. [🏁Getting Started ](#getting-started-)
    4. [🎥 Demo](#-demo)
    5. [🎥 screenshots](#-screenshots)
+      1. [Home Page](#home-page)
+      2. [Log in](#log-in)
+      3. [Sign up](#sign-up)
+      4. [Matches Page](#matches-page)
+      5. [user Reservation](#user-reservation)
+      6. [Stadiums page](#stadiums-page)
+      7. [All users](#all-users)
+      8. [User Profile](#user-profile)
+      9. [Add new match (for manager)](#add-new-match-for-manager)
+      10. [Add new Stadium (for manager)](#add-new-stadium-for-manager)
 
 ### 🚩About<a name = "about"></a>
 
@@ -28,8 +37,6 @@
 - schedules, number of attendees, match officials and the registered users
 
 ### ✨ Features <a name = "features"></a>
-
-
 
 **for user**
 
@@ -55,7 +62,6 @@
 - delete user
 
 ## 💻Technologies Used<a name = "build"></a>
-
 
 - React
 - React-Router dom
@@ -131,65 +137,70 @@ https://user-images.githubusercontent.com/60351557/192614346-598be757-5e44-491f-
 
 ## 🎥 screenshots<a name = "screenshots"></a>
 
-###  Home Page
-  ![Home Page](./screenshots/home1.png)
-  ![Home Page](./screenshots/home2.png)
-  ![Home Page](./screenshots/home3.png)
-  ![Home Page](./screenshots/home4.png)
+### Home Page
+
+![Home Page](./screenshots/home1.png)
+![Home Page](./screenshots/home2.png)
+![Home Page](./screenshots/home3.png)
+![Home Page](./screenshots/home4.png)
 
   <hr />
 
-###  Log in
-  ![Log in](./screenshots/login.png)
+### Log in
+
+![Log in](./screenshots/login.png)
 
   <hr />
 
-###  Sign up
-  ![Sign up](./screenshots/signup.png)
+### Sign up
+
+![Sign up](./screenshots/signup.png)
 
   <hr />
 
-###  Stadiums page
-  ![Stadiums page](./screenshots/stadiums1.png)
-  ![Stadiums page](./screenshots/stadiums2.png)
+### Matches Page
+
+![match Page](./screenshots/matches.png)
+![match Page](./screenshots/match-details.png)
+![match Page](./screenshots/match-details2.png)
+![match Page](./screenshots/paypal-integration.png)
 
   <hr />
 
-###  All users
-  ![All users Page](./screenshots/all-users.png)
-  ![All users Page](./screenshots/all-users2.png)
+### user Reservation
+
+![user Reservation Page](./screenshots/user-reservation.png)
 
   <hr />
 
-###  User Profile
-  ![User Profile Page](./screenshots/userProfile.png)
+### Stadiums page
+
+![Stadiums page](./screenshots/stadiums1.png)
+![Stadiums page](./screenshots/stadiums2.png)
 
   <hr />
 
-###  user Reservation
-  ![user Reservation Page](./screenshots/user-reservation.png)
+### All users
+
+![All users Page](./screenshots/all-users.png)
+![All users Page](./screenshots/all-users2.png)
 
   <hr />
 
-###  Matches Page
-  ![Matches Page](./screenshots/matches.png)
+### User Profile
+
+![User Profile Page](./screenshots/userProfile.png)
 
   <hr />
 
-###  Add new match (for manager)
-  ![Add new match](./screenshots/add-new-match.png)
+### Add new match (for manager)
+
+![Add new match](./screenshots/add-new-match.png)
 
   <hr />
 
-###  Add new Stadium (for manager)
-  ![Add new stadium](./screenshots/add-new-stadium.png)
+### Add new Stadium (for manager)
 
-  <hr />
-
-###  Match
-  ![match Page](./screenshots/matches.png)
-  ![match Page](./screenshots/match-details.png)
-  ![match Page](./screenshots/match-details2.png)
-  ![match Page](./screenshots/paypal-integration.png)
+![Add new stadium](./screenshots/add-new-stadium.png)
 
   <hr />
