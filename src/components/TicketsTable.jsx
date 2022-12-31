@@ -25,11 +25,11 @@ const TicketsTable = ({ tickets }) => {
 						<tr className="my-2 text-primary" key={idx}>
 							<td className=" fw-bold text-center">
 								<span className="text-primary ms-2">
-									R {el.seat.y} * C {el.seat.x}
+									R {el?.seat?.y} * C {el?.seat?.x}
 								</span>
 							</td>
 							<td className="text-center">
-								<span className="fw-bold mt-2">{el.ticketNumber}</span>
+								<span className="fw-bold mt-2">{el?.ticketNumber}</span>
 							</td>
 						</tr>
 					))}

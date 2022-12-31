@@ -33,9 +33,9 @@ const ReservationCard = ({ reservation, onCancel }) => {
 		<div className="w-md-50 p-3 shadow-lg rounded-4 mb-3">
 			<Row>
 				<Col className="text-center ">
-					<LinkContainer to={`/matches/${reservation.match.id}`}>
+					<LinkContainer to={`/matches/${reservation?.match?.id}`}>
 						<h2 className="text-primary border-bottom d-inline-block pb-3 cursor-pointer">
-							{reservation.match.name}
+							{reservation?.match?.name}
 						</h2>
 					</LinkContainer>
 				</Col>
@@ -45,9 +45,9 @@ const ReservationCard = ({ reservation, onCancel }) => {
 					<h5 className="fw-bold mt-2">
 						Date :
 						<span className="text-primary ms-2">
-							{hasPassed(reservation.match.date)
-								? `Ended : ${moment(reservation.match.date).fromNow()}`
-								: moment(reservation.match.date).format('DD/MM/YYYY -  h:mm a')}
+							{hasPassed(reservation?.match.date)
+								? `Ended : ${moment(reservation?.match?.date).fromNow()}`
+								: moment(reservation?.match?.date).format('DD/MM/YYYY -  h:mm a')}
 						</span>
 					</h5>
 					<h5 className="fw-bold mt-2">
@@ -57,19 +57,19 @@ const ReservationCard = ({ reservation, onCancel }) => {
 					<h5 className="fw-bold mt-2">
 						Seat Price :
 						<span className="text-primary ms-2">
-							{reservation.match.seatPrice} $
+							{reservation?.match?.seatPrice} $
 						</span>
 					</h5>
 					<h5 className="fw-bold mt-2">
 						Stadium :
 						<span className="text-primary ms-2">
-							{reservation.match.stadium.name}
+							{reservation?.match?.stadium?.name}
 						</span>
 					</h5>
 				</Col>
 
 				<Col className="d-flex flex-column justify-content-center align-items-center">
-					<TicketsTable tickets={reservation.reservations} />
+					<TicketsTable tickets={reservation?.reservations} />
 				</Col>
 			</Row>
 			{canCancel(reservation.match.date) && (
